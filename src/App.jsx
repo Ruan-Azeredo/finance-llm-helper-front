@@ -1,47 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Layout from './Layout';
+import InputCategory from './components/InputCategory';
+import BadgeCategory from './components/BadgeCategory';
+import TransactionsTable from './components/TransactionsTable';
+import FileUpload from './components/FileUpload';
+import { default_categories } from './default_categories';
+import AwaitModal from './components/AwaitModal';
 
-function FileUpload() {
-  const [selectedFile, setSelectedFile] = useState(null);
+function App() {
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const [transactions, setTransactions] = useState(null)
+  const [analyzeReqSended, setAnalyzeReqSended] = useState(false)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!selectedFile) {
-      alert("Please select a file");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-
-    try {
-      await axios.post("http://127.0.0.1:8000/categorize-transaction", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-    }).then((response) => {
-      console.log('resp: ',response);
-      alert("File uploaded successfully!");
-    })
-
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
+  const Categories = ({ categories }) => {
+    return (
+      <>
+        <InputCategory/>
+        <div className='mt-4 flex flex-wrap gap-1'>
+          {default_categories.map((category) => (
+            <BadgeCategory key={category} category={category}/>
+          ))}
+        </div>
+      </>
+    )
+  }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleFileChange} accept=".csv,.ofx" />
-        <button type="submit">Upload File</button>
-      </form>
+    <div className='w-full h-full bg-white'>
+      <Layout categories={<Categories/>} chart={<div>graphic</div>}>
+
+        {transactions ? (
+          <TransactionsTable transactions={transactions}/>
+        ) : (
+          <>
+            <FileUpload setAnalyzeReqSended={setAnalyzeReqSended} setTransactions={setTransactions}/>
+            {analyzeReqSended &&
+              <AwaitModal/>
+            }
+          </>
+        )
+        }
+      </Layout>
+
     </div>
   );
 }
 
-export default FileUpload;
+export default App;
