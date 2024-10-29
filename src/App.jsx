@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Layout from './Layout';
+import LayoutContainer from './LayoutContainer';
 import InputCategory from './components/InputCategory';
 import BadgeCategory from './components/BadgeCategory';
 import TransactionsTable from './components/TransactionsTable';

@@ -1,6 +1,6 @@
 import { BellIcon } from '@heroicons/react/24/outline'
 
-export default function Layout({ children, categories, chart }) {
+export default function LayoutContainer({ children, categories, chart }) {
   return (
     <>
       <div className="flex min-h-full flex-col">
