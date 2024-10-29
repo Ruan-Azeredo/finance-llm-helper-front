@@ -8,8 +8,8 @@ export default function LayoutContainer({ children, categories, chart }) {
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <img
               alt="Your Company"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              className="h-8 w-auto"
+              src="src/assets/spendlyzer-dark-logo.png"
+              className="h-10 w-auto"
             />
             <div className="flex items-center gap-x-8">
               <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-300">
