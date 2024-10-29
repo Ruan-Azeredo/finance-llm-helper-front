@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className='w-full h-full bg-white'>
-      <Layout categories={<Categories/>} chart={<div>graphic</div>}>
+      <LayoutContainer categories={<Categories/>} chart={<div>graphic</div>}>
 
         {transactions ? (
           <TransactionsTable transactions={transactions}/>
@@ -41,7 +41,7 @@ function App() {
           </>
         )
         }
-      </Layout>
+      </LayoutContainer>
 
     </div>
   );
