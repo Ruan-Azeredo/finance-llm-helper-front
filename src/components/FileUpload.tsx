@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios";
 import { DocumentIcon } from "@heroicons/react/24/outline";
-const VITE_APP = await import.meta.env.VITE_APP
+const VITE_APP = import.meta.env.VITE_APP
 
 interface FileUploadProps {
   setTransactions: (data: unknown) => void,
