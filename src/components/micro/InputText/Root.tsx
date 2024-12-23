@@ -3,9 +3,11 @@ interface InputTextProps {
   children?: React.ReactNode
   className?: string
   placeholder?: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Root({label, children, className, placeholder}: InputTextProps) {
+
+export default function Root({label, children, className, placeholder, onChange}: InputTextProps) {
     return (
       <div className={className}>
         <label htmlFor={label} className="block text-sm font-medium leading-6 text-gray-900">
@@ -18,6 +20,7 @@ export default function Root({label, children, className, placeholder}: InputTex
               id={label}
               name={label}
               type="text"
+              onChange={onChange}
               placeholder={placeholder}
               className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
             />
