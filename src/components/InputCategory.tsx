@@ -1,4 +1,4 @@
-import { BarsArrowUpIcon, PlusIcon, Square3Stack3DIcon, UsersIcon } from '@heroicons/react/20/solid'
+import { PlusIcon } from '@heroicons/react/20/solid'
 
 export default function InputCategory() {
   return (
