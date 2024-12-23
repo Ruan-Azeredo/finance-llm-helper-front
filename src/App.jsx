@@ -7,41 +7,16 @@ import TransactionsTable from './components/TransactionsTable';
 import FileUpload from './components/FileUpload';
 import { default_categories } from './default_categories';
 import AwaitModal from './components/AwaitModal';
+import { StyledButton } from './components/micro/StyledButton';
+import { InputText } from './components/micro/InputText';
+import UploadFileButton from './components/UploadFileButton';
+import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 function App() {
 
-  const [transactions, setTransactions] = useState(null)
-  const [analyzeReqSended, setAnalyzeReqSended] = useState(false)
-
-  const Categories = ({ categories }) => {
-    return (
-      <>
-        <InputCategory/>
-        <div className='mt-4 flex flex-wrap gap-1'>
-          {default_categories.map((category) => (
-            <BadgeCategory key={category} category={category}/>
-          ))}
-        </div>
-      </>
-    )
-  }
-
   return (
     <div className='w-full h-full bg-white'>
-      <LayoutContainer categories={<Categories/>} chart={<div>graphic</div>}>
-
-        {transactions ? (
-          <TransactionsTable transactions={transactions}/>
-        ) : (
-          <>
-            <FileUpload setAnalyzeReqSended={setAnalyzeReqSended} setTransactions={setTransactions}/>
-            {analyzeReqSended &&
-              <AwaitModal/>
-            }
-          </>
-        )
-        }
-      </LayoutContainer>
+      <LayoutContainer/>
 
     </div>
   );
