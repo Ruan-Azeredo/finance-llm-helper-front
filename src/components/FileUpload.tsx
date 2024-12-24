@@ -77,7 +77,7 @@ export default function FileUpload({setTransactions, setAnalyzeReqSended}: FileU
                   )}
                   <input onChange={handleFileChange} id="file-upload" name="file-upload" type="file" className="sr-only"/>
                   {selectedFile && (
-                    <p className=" text-sm font-normal text-gray-600">{selectedFile.name}</p>
+                    <p className="flex gap-2 text-sm font-normal text-gray-600"><DocumentIcon className="h-5 w-5"/>{selectedFile.name}</p>
                   )}
       
                 </label>
