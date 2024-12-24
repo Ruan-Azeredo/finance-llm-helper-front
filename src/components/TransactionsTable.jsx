@@ -1,14 +1,12 @@
 import { ArrowUturnLeftIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { default_categories } from "../default_categories"
 import SelectCategory from "./SelectCategory"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-export default function TransactionsTable({transactions}) {
+export default function TransactionsTable({transactions, setTransactions}) {
     console.log('transactions: ', transactions)
-    const preDeleted = []
-    const [t, setT] = useState(transactions)
     return (
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="">
 {/*             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                 <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
@@ -31,7 +29,7 @@ export default function TransactionsTable({transactions}) {
                     </th>
                     </tr> */}
                 </thead>
-                {t?.map((transaction) => (
+                {transactions?.map((transaction) => (
                     <tbody className={`divide-y divide-gray-200 bg-white`}>
                         <tr>
                             <td className={`${transaction.id} w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0`}>
@@ -50,7 +48,7 @@ export default function TransactionsTable({transactions}) {
                             <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 lg:table-cell`}>{transaction.memo}</td>
                             <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 sm:table-cell`}>{transaction.amount}</td>
                             {/* <td className="px-3 py-4 text-sm text-gray-500">{transaction.category}</td> */}
-                            <td className={`${transaction.id} py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0`}>
+                            <td className={`${transaction.id} py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 z-30`}>
                                 <SelectCategory defaultCategory={transaction.category} categories={default_categories}/>
                                 {/* <a href="#" className="text-indigo-600 hover:text-indigo-900">{transaction.category}<span className="sr-only">, Lindsay Walton</span></a> */}
                             </td>
@@ -86,12 +84,11 @@ export default function TransactionsTable({transactions}) {
                         </tr>
                         <div className=" w-fit">
                             <button onClick={() => {
-                                setT(t.filter((transact) => transact.id !== transaction.id))
+                                setTransactions(transactions.filter((transact) => transact.id !== transaction.id))
                                 document.getElementById(transaction.id + 'rm-btn').classList.add('hidden')
                                 document.getElementById(transaction.id + 'x-btn').classList.remove('hidden')
                                 document.getElementById(transaction.id + 'back-btn').classList.add('hidden')
 
-                                console.log('t: ', t)
                             }} id={transaction.id + 'rm-btn'} type="button" class="-mt-[54px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Remover</button>
                         </div>
                     </tbody>
@@ -99,7 +96,6 @@ export default function TransactionsTable({transactions}) {
                 ))}
                 </table>
             </div>
-            <div onClick={() => console.log('t: ', t)}>kjsdfs</div>
         </div>
 
     )
