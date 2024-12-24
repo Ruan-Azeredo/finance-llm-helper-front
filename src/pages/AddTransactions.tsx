@@ -43,7 +43,7 @@ const AddTransactions = () => {
 
               {transactions.length > 0 ? (
                 <SectionContainer title="Transações">
-                  <TransactionsSection transactions={transactions}/>
+                  <TransactionsSection transactions={transactions} setTransactions={setTransactions}/>
                 </SectionContainer>
               ) : (
                 <>
