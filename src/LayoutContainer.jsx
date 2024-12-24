@@ -17,17 +17,11 @@ const user = {
   imageUrl:
     'https://api.dicebear.com/9.x/micah/svg?seed=Eden&baseColor=f9c9b6,ac6651&mouth=laughing,pucker,smile,smirk,surprised&backgroundColor=b6e3f4',
 }
-const navigation = [
-  { name: 'Home', href: '#', current: true },
-  { name: 'Profile', href: '#', current: false },
-  { name: 'Resources', href: '#', current: false },
-  { name: 'Company Directory', href: '#', current: false },
-  { name: 'Openings', href: '#', current: false },
-]
+
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Perfil', href: '#' },
+  { name: 'Configurações', href: '#' },
+  { name: 'Sair', href: '#' },
 ]
 
 export default function LayoutContainer() {
@@ -213,7 +207,7 @@ export default function LayoutContainer() {
         <footer className='relative '>
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left">
-              <span className="block sm:inline">&copy; 2021 Your Company, Inc.</span>{' '}
+              <span className="block sm:inline">&copy; 2024 Spendlyzer, Inc.</span>{' '}
               <span className="block sm:inline">All rights reserved.</span>
             </div>
           </div>
