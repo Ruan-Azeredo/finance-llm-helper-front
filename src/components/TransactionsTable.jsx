@@ -6,28 +6,11 @@ import { useEffect, useState } from "react"
 export default function TransactionsTable({transactions, setTransactions}) {
     console.log('transactions: ', transactions)
     return (
-        <div className="">
-{/*             <div className="sm:flex sm:items-center">
-                <div className="sm:flex-auto">
-                <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
-                <p className="mt-2 text-sm text-gray-700">A list of all the users in your account including their name, title, email and role.</p>
-                </div>
-                <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                <button type="button" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add user</button>
-                </div>
-            </div> */}
+        <div className="z-50">
             <div className="-mx-4 mt-8 sm:-mx-0">
                 <table className="min-w-full divide-y divide-gray-300">
                 <thead>
-                    {/* <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Data</th>
-                    <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Descrição</th>
-                    <th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">Valor</th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Catégoria</th>
-                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                        <span className="sr-only">Edit</span>
-                    </th>
-                    </tr> */}
+
                 </thead>
                 {transactions?.map((transaction) => (
                     <tbody className={`divide-y divide-gray-200 bg-white`}>
@@ -44,20 +27,33 @@ export default function TransactionsTable({transactions, setTransactions}) {
                                     <dd><XCircleIcon/></dd>
                                 </dl>
                             </td>
-                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 lg:table-cell`}>{transaction.date}</td>
-                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 lg:table-cell`}>{transaction.memo}</td>
-                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 sm:table-cell`}>{transaction.amount}</td>
-                            {/* <td className="px-3 py-4 text-sm text-gray-500">{transaction.category}</td> */}
-                            <td className={`${transaction.id} py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0 z-30`}>
-                                <SelectCategory defaultCategory={transaction.category} categories={default_categories}/>
-                                {/* <a href="#" className="text-indigo-600 hover:text-indigo-900">{transaction.category}<span className="sr-only">, Lindsay Walton</span></a> */}
+                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 lg:table-cell`}>
+                                <input defaultValue={transaction.date} onChange={(e) => {
+                                    console.log(e.target.value)
+                                    transactions[transactions.indexOf(transaction)].date = e.target.value
+                                    setTransactions([...transactions])
+                                }} className="border-0 outline-none focus:ring-0 w-32 cursor-pointer" type="text"/>
+                            </td>
+                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 lg:table-cell`}>
+                                <input defaultValue={transaction.memo} onChange={(e) => {
+                                    console.log(e.target.value)
+                                    transactions[transactions.indexOf(transaction)].memo = e.target.value
+                                    setTransactions([...transactions])
+                                }} className="border-0 outline-none focus:ring-0 cursor-pointer" type="text"/>
+                            </td>
+                            <td className={`${transaction.id} hidden px-3 py-4 text-sm text-gray-500 sm:table-cell`}>
+                                <input defaultValue={transaction.amount} onChange={(e) => {
+                                    console.log(e.target.value)
+                                    transactions[transactions.indexOf(transaction)].amount = e.target.value
+                                    setTransactions([...transactions])
+                                }} className="border-0 outline-none focus:ring-0 w-24 cursor-pointer" type="text"/>
+                            </td>
+                            <td className={`${transaction.id} w-48 py-auto text-right text-sm font-medium sm:pr-0 overflow-visible`}>
+                                <SelectCategory transactions={transactions} setTransactions={setTransactions} listIndex={transactions.indexOf(transaction)} categories={default_categories}/>
                             </td>
                             <td>
                                 <button id={transaction.id + 'x-btn'} type="button" onClick={() => {
-                                        /* preDeleted.push(transaction.id)
-                                        console.log('preDeleted: ', preDeleted) */
                                         const items = document.getElementsByClassName(`${transaction.id}`)
-                                        console.log('items: ', items)
                                         Array.from(items).forEach(element => {
                                             element.classList.add('blur-sm');
                                         });
@@ -68,8 +64,6 @@ export default function TransactionsTable({transactions, setTransactions}) {
                                     <XMarkIcon className="text-gray-500 ml-4 h-4 w-4"/>
                                 </button>
                                 <button id={transaction.id + 'back-btn'} className="hidden" type="button" onClick={() => {
-                                        /* preDeleted.pop(transaction.id)
-                                        console.log('preDeleted: ', preDeleted) */
                                         const items = document.getElementsByClassName(`${transaction.id}`)
                                         Array.from(items).forEach(element => {
                                             element.classList.remove('blur-sm');
