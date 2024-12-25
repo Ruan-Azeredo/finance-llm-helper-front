@@ -4,7 +4,7 @@ export default function SectionContainer({ children, title }: { children: React.
             <h2 id={title} className="sr-only">
             {title}
             </h2>
-            <div className="overflow-hidden rounded-lg bg-white shadow">
+            <div className="overflow-visible rounded-lg bg-white shadow">
             {children}
             </div>
         </section>
