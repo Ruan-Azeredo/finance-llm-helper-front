@@ -2,8 +2,14 @@ import { ArrowUturnLeftIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/
 import { default_categories } from "../default_categories"
 import SelectCategory from "./SelectCategory"
 import { useEffect, useState } from "react"
+import { Modal }from "./micro/Modal"
+import { StyledButton } from "./micro/StyledButton"
+import TransactionForm from "./form/TransactionForm"
 
 function TransactionItem({transaction, transactions, setTransactions}){
+
+    const [open, setOpen] = useState(false)
+    const [handleAction, setHandleAction] = useState(false)
 
     const handleAmountSignal = (direction) => {
         if (direction === 'expense') {
@@ -22,7 +28,12 @@ function TransactionItem({transaction, transactions, setTransactions}){
         }
     }
 
+    //remmove double whitespace
+    const removeWhitespace = (str) => {
+        return str.replace(/\s\s+/g, ' ');
+    }
 
+    console.log(removeWhitespace(transaction.memo), removeWhitespace(transaction.memo).length)
     return (
         <tbody className={`divide-y divide-gray-200 bg-white`}>
             <tr>
@@ -46,12 +57,19 @@ function TransactionItem({transaction, transactions, setTransactions}){
                     }} className="border-0 outline-none focus:ring-0 text-sm w-24 p-0" type="text"/>
                 </td>
                 <td className={`${transaction.id} hidden py-auto h-fit w-full text-gray-500 lg:table-cell`}>
-                    <textarea value={transaction.memo} onChange={(e) => {
+                    {/* <textarea value={transaction.memo} onChange={(e) => {
                         console.log(e.target.value)
                         transactions[transactions.indexOf(transaction)].memo = e.target.value
                         setTransactions([...transactions])
                     }} className="border-0 outline-none focus:ring-0 text-xs my-auto p-0 w-full resize-none flex items-center justify-center h-fit" type="text"  
-                    />
+                    /> */}
+                    <Modal.Root open={open} setOpen={setOpen}>
+                        <Modal.Title title='Altere sua Transação'/>
+                        <Modal.Body className="mt-6">
+                            <TransactionForm type="update" transaction={transaction} transactions={transactions} setTransactions={setTransactions}/>
+                        </Modal.Body>
+                    </Modal.Root>
+                    <p onClick={() => setOpen(true)} className="text-xs cursor-pointer">{removeWhitespace(transaction.memo).length > 45 ? removeWhitespace(transaction.memo).slice(0, 45) + '...' : removeWhitespace(transaction.memo)}</p>
                 </td>
                 <td className={`${transaction.id} hidden ml-auto pl-4 w-fit py-4 text-sm text-gray-500 sm:block`}>
 
