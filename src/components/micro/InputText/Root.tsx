@@ -7,11 +7,12 @@ interface InputTextProps {
   placeholder?: string
   validationError?: boolean
   invalidMessage?: string
+  defaultValue?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 
-export default function Root({label, children, className, placeholder, validationError, invalidMessage, onChange}: InputTextProps) {
+export default function Root({label, children, className, placeholder, validationError, invalidMessage, defaultValue, onChange}: InputTextProps) {
     return (
       <div className={className}>
         <label htmlFor={label} className="block text-sm font-medium leading-6 text-gray-900">
@@ -27,6 +28,7 @@ export default function Root({label, children, className, placeholder, validatio
               onChange={onChange}
               placeholder={placeholder}
               aria-invalid={validationError}
+              defaultValue={defaultValue}
               className={
                 `block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6 
                 ${
