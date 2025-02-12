@@ -8,10 +8,11 @@ import AddTransactionSection from "../components/sections/AddTransactionSection"
 import { Transaction } from "../schemas/Transaction"
 import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
+import { fake_transactions } from "../components/const/fake_transactions"
 
 const AddTransactions = () => {
 
-  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>(fake_transactions)
   const [analyzeReqSended, setAnalyzeReqSended] = useState<boolean>(false)
   
 
