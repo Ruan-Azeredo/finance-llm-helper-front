@@ -4,20 +4,29 @@ import { StyledButton } from "../micro/StyledButton"
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { isValidAmountFormat, isValidDateFormat } from "../logic/validator"
 import { Transaction } from "../../schemas/Transaction"
-import { add_transaction, update_transaction } from "../logic/transactions_ops"
 
 const Form = ({
     type = "add",
     transaction,
-    transactions,
-    setTransactions,
-    setOpen
+    validateAddForm,
+    validateUpdateForm,
+    addTransaction,
+    updateTransaction,
 } : {
     type?: "add" | "update",
-    transaction?: Transaction
-    transactions: Transaction[],
-    setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>,
-    setOpen?: React.Dispatch<React.SetStateAction<Transaction[]>>
+    transaction?: Transaction,
+    validateAddForm: (
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string
+    ) => boolean,
+    validateUpdateForm: (
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string
+    ) => boolean,
+    addTransaction: (transaction: Transaction) => void,
+    updateTransaction: (new_transaction: Transaction, incomeOrExpense: "income" | "expense", setIncomeOrExpense: React.Dispatch<React.SetStateAction<"income" | "expense" | null>>) => void
 }) => {
 
     const [incomeOrExpense, setIncomeOrExpense] = useState<"income" | "expense" | null>(transaction?.direction ?? "income")
@@ -129,7 +138,7 @@ const Form = ({
 
     let btn
     if(type === 'update'){
-        btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
+        btn = <StyledButton.Root className='h-9 mt-8 flex' 
         action={() => {
             if (validateUpdateForm(
                     isValidDateFormat, isValidAmountFormat,
@@ -138,12 +147,12 @@ const Form = ({
             ) === true) {
             
                 console.log('valid')
-                updateTransaction(new_transaction, incomeOrExpense!)
+                updateTransaction(new_transaction, incomeOrExpense!, setIncomeOrExpense)
             }
     }}
         >Atualizar</StyledButton.Root>
     } else{
-        btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
+        btn = <StyledButton.Root className='h-9 mt-8 flex' 
         action={() => {
             if (validateAddForm(
                     isValidDateFormat, isValidAmountFormat,
@@ -221,7 +230,7 @@ const Form = ({
                 </div>
                 <div className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
                     {btn}
-                    <StyledButton.Root type='secondary' className='h-9 mt-8 flex' action={() => setOpen(false)}>Cancelar</StyledButton.Root>
+                    
                 </div>
             </div>
         </div>

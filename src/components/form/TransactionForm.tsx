@@ -1,8 +1,4 @@
-import { useState } from "react"
-import { InputText } from "../micro/InputText"
-import { StyledButton } from "../micro/StyledButton"
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline"
-import { isValidAmountFormat, isValidDateFormat } from "../logic/validator"
+import React from "react"
 import { Transaction } from "../../schemas/Transaction"
 import { add_transaction, update_transaction } from "../logic/transactions_ops"
 import Form from "./Form"
@@ -18,39 +14,28 @@ const TransactionForm = ({
     transaction?: Transaction
     transactions: Transaction[],
     setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>,
-    setOpen?: React.Dispatch<React.SetStateAction<Transaction[]>>
+    setOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
 
-    const [incomeOrExpense, setIncomeOrExpense] = useState<"income" | "expense" | null>(transaction?.direction ?? "income")
-    const [transactionDescription, setTransactionDescription] = useState<null | string>(null)
-    const [transactionAmount , setTransactionAmount] = useState<null | string>(null)
-    const [invalidAmount, setInvalidAmount] = useState<boolean>(false)
-    const [transactionDate, setTransactionDate] = useState<null | string>(null)
-    const [invalidDate, setInvalidDate] = useState<boolean>(false)
-    const [transactionCategory, setTransactionCategory] = useState<null | string>(null)
-
-    
-    const new_transaction: Transaction = {
-        id:  transaction?.id ?? crypto.randomUUID(),
-        memo: transactionDescription ?? transaction?.memo ?? null,
-        amount: transactionAmount ?? transaction?.amount ?? null,
-        date: transactionDate ?? transaction?.date ?? null,
-        category: transactionCategory ?? transaction?.category ?? null,
-        direction: incomeOrExpense ?? transaction?.direction ?? null
-    }
 
     const addTransaction = (new_transaction: Transaction): void => {
         
         add_transaction(setTransactions, transactions, new_transaction)
+        if(setOpen){
+            setOpen(false)
+        }
     }
 
-    const updateTransaction = (new_transaction: Transaction, incomeOrExpense: "income" | "expense"): void => {
+    const updateTransaction = (new_transaction: Transaction, incomeOrExpense: "income" | "expense", setIncomeOrExpense: React.Dispatch<React.SetStateAction<"income" | "expense" | null>>): void => {
 
         if(incomeOrExpense === transaction?.direction){
             setIncomeOrExpense(null)
         }
         
         update_transaction(setTransactions, transactions, new_transaction)
+        if(setOpen){
+            setOpen(false)
+        }
     }
 
     const validateAddForm = (
@@ -128,41 +113,41 @@ const TransactionForm = ({
         }
     } */
 
-    let btn
-    if(type === 'update'){
-        btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
-        action={() => {
-            if (validateUpdateForm(
-                    isValidDateFormat, isValidAmountFormat,
-                    setInvalidDate, setInvalidAmount,
-                    transactionDate, transactionAmount
-            ) === true) {
+    // let btn
+    // if(type === 'update'){
+    //     btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
+    //     action={() => {
+    //         if (validateUpdateForm(
+    //                 isValidDateFormat, isValidAmountFormat,
+    //                 setInvalidDate, setInvalidAmount,
+    //                 transactionDate, transactionAmount
+    //         ) === true) {
             
-                console.log('valid')
-                updateTransaction(new_transaction, incomeOrExpense!)
-            }
-    }}
-        >Atualizar</StyledButton.Root>
-    } else{
-        btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
-        action={() => {
-            if (validateAddForm(
-                    isValidDateFormat, isValidAmountFormat,
-                    setInvalidDate, setInvalidAmount,
-                    transactionDate, transactionAmount
-            ) === true) {
+    //             console.log('valid')
+    //             updateTransaction(new_transaction, incomeOrExpense!)
+    //         }
+    // }}
+    //     >Atualizar</StyledButton.Root>
+    // } else{
+    //     btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
+    //     action={() => {
+    //         if (validateAddForm(
+    //                 isValidDateFormat, isValidAmountFormat,
+    //                 setInvalidDate, setInvalidAmount,
+    //                 transactionDate, transactionAmount
+    //         ) === true) {
             
-                console.log('valid')
-                addTransaction(new_transaction)
-            }
-    }}
+    //             console.log('valid')
+    //             addTransaction(new_transaction)
+    //         }
+    // }}
             
-        >Adicionar</StyledButton.Root>
-    }
+    //     >Adicionar</StyledButton.Root>
+    // }
 
     return (
         <div>
-            <Form/>
+            <Form type={type} transaction={transaction} validateAddForm={validateAddForm} validateUpdateForm={validateUpdateForm} addTransaction={addTransaction} updateTransaction={updateTransaction}/>
         </div>
     )
 }
