@@ -66,7 +66,7 @@ function TransactionItem({transaction, transactions, setTransactions}){
                     <Modal.Root open={open} setOpen={setOpen}>
                         <Modal.Title title='Altere sua Transação'/>
                         <Modal.Body className="mt-6">
-                            <TransactionForm type="update" transaction={transaction} transactions={transactions} setTransactions={setTransactions}/>
+                            <TransactionForm type="update" transaction={transaction} transactions={transactions} setTransactions={setTransactions} setOpen={setOpen}/>
                         </Modal.Body>
                     </Modal.Root>
                     <p onClick={() => setOpen(true)} className="text-xs cursor-pointer">{removeWhitespace(transaction.memo).length > 45 ? removeWhitespace(transaction.memo).slice(0, 45) + '...' : removeWhitespace(transaction.memo)}</p>
