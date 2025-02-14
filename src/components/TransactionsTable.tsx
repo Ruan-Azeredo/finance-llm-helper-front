@@ -1,24 +1,26 @@
-import { ArrowUturnLeftIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { ArrowUturnLeftIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { default_categories } from "../default_categories"
 import SelectCategory from "./SelectCategory"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { Modal }from "./micro/Modal"
-import { StyledButton } from "./micro/StyledButton"
 import TransactionForm from "./form/TransactionForm"
 import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate"
+import { Transaction } from "../schemas/Transaction"
 
-function TransactionItem({transaction, transactions, setTransactions}){
+function TransactionItem(
+    {transaction, transactions, setTransactions}: {transaction: Transaction, transactions: Transaction[], setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>}
+){
 
     const { delete_transaction } = useContext(TransactionsTemplateContext)
 
     const [open, setOpen] = useState(false)
 
     //remmove double whitespace
-    const removeWhitespace = (str) => {
+    const removeWhitespace = (str: string) => {
         return str.replace(/\s\s+/g, ' ');
     }
 
-    const transaction_memo = removeWhitespace(transaction.memo).length > 45 ? removeWhitespace(transaction.memo).slice(0, 45) + '...' : removeWhitespace(transaction.memo)
+    const transaction_memo = removeWhitespace(transaction.memo ?? '').length > 45 ? removeWhitespace(transaction.memo ?? '').slice(0, 45) + '...' : removeWhitespace(transaction.memo ?? '')
     const transaction_amount = transaction.direction === 'expense' ? '- R$' + transaction.amount : '+ R$' + transaction.amount
 
     const pre_delete_from_template = () => {
@@ -26,9 +28,18 @@ function TransactionItem({transaction, transactions, setTransactions}){
         Array.from(items).forEach(element => {
             element.classList.add('blur-sm');
         });
-        document.getElementById(transaction.id + 'rm-btn').classList.remove('hidden')
-        document.getElementById(transaction.id + 'x-btn').classList.add('hidden')
-        document.getElementById(transaction.id + 'back-btn').classList.remove('hidden')
+        const rmBtn = document.getElementById(transaction.id + 'rm-btn');
+        if (rmBtn) {
+            rmBtn.classList.remove('hidden');
+        }
+        const xBtn = document.getElementById(transaction.id + 'x-btn');
+        if (xBtn) {
+            xBtn.classList.add('hidden');
+        }
+        const backBtn = document.getElementById(transaction.id + 'back-btn');
+        if (backBtn) {
+            backBtn.classList.remove('hidden');
+        }
     }
 
     const not_delete_from_template = () => {
@@ -36,17 +47,35 @@ function TransactionItem({transaction, transactions, setTransactions}){
         Array.from(items).forEach(element => {
             element.classList.remove('blur-sm');
         });
-        document.getElementById(transaction.id + 'rm-btn').classList.add('hidden')
-        document.getElementById(transaction.id + 'x-btn').classList.remove('hidden')
-        document.getElementById(transaction.id + 'back-btn').classList.add('hidden')
+        const rmBtn = document.getElementById(transaction.id + 'rm-btn');
+        if (rmBtn) {
+            rmBtn.classList.add('hidden');
+        }
+        const xBtn = document.getElementById(transaction.id + 'x-btn');
+        if (xBtn) {
+            xBtn.classList.remove('hidden');
+        }
+        const backBtn = document.getElementById(transaction.id + 'back-btn');
+        if (backBtn) {
+            backBtn.classList.add('hidden');
+        }
     }
 
     const delete_from_template = () => {
         delete_transaction(transaction)
 
-        document.getElementById(transaction.id + 'rm-btn').classList.add('hidden')
-        document.getElementById(transaction.id + 'x-btn').classList.remove('hidden')
-        document.getElementById(transaction.id + 'back-btn').classList.add('hidden')
+        const rmBtn = document.getElementById(transaction.id + 'rm-btn');
+        if (rmBtn) {
+            rmBtn.classList.add('hidden');
+        }
+        const xBtn = document.getElementById(transaction.id + 'x-btn');
+        if (xBtn) {
+            xBtn.classList.remove('hidden');
+        }
+        const backBtn = document.getElementById(transaction.id + 'back-btn');
+        if (backBtn) {
+            backBtn.classList.add('hidden');
+        }
 
     }
 
@@ -79,7 +108,7 @@ function TransactionItem({transaction, transactions, setTransactions}){
                         setTransactions([...transactions])
                     }} className="border-0 outline-none focus:ring-0 text-xs my-auto p-0 w-full resize-none flex items-center justify-center h-fit" type="text"  
                     /> */}
-                    <p onClick={() => setOpen(true)} className="text-xs cursor-pointer cursor-pointer">{transaction_memo}</p>
+                    <p onClick={() => setOpen(true)} className="text-xs cursor-pointer">{transaction_memo}</p>
                 </td>
                 <td className={`${transaction.id} hidden pl-4 py-4 xl:pr-8 lg:pr-6 text-base text-gray-500 sm:flex`}>
 
@@ -121,7 +150,7 @@ function TransactionItem({transaction, transactions, setTransactions}){
                 </td>
             </tr>
             <div className=" w-fit">
-                <button onClick={delete_from_template} id={transaction.id + 'rm-btn'} type="button" class="-mt-[54px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Remover</button>
+                <button onClick={delete_from_template} id={transaction.id + 'rm-btn'} type="button" className="-mt-[54px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Remover</button>
             </div>
         </tbody>
     )
