@@ -231,7 +231,7 @@ const Form = ({
                     </div>
                 </div>
                 <div className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
-                    <StyledButton.Root type="secondary" className='mr-4 h-9 mt-8 flex' action={() => setOpen && setOpen(false)}>Cancelar</StyledButton.Root>
+                    <StyledButton.Root type="secondary" className={`mr-4 h-9 mt-8 flex ${type === 'add' ? 'hidden' : 'justify-end'}`} action={() => setOpen && setOpen(false)}>Cancelar</StyledButton.Root>
                     {btn}
                 </div>
             </div>
