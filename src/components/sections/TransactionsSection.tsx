@@ -1,33 +1,45 @@
 import { StyledButton } from "../micro/StyledButton"
 import TransactionsTable from "../TransactionsTable"
 import { Transaction } from "../../schemas/Transaction"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate"
 
-export default function TransactionsSection({ transactions, setTransactions }: { transactions: Transaction[], setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>> }) {
+export default function TransactionsSection() {
+
+    const { transactionsTemplate } = useContext(TransactionsTemplateContext)
 
     const [totalAmount, setTotalAmount] = useState('R$ 0,00')
 
     useEffect(() => {
-        let total = 0
-        transactions.map((transaction) => {
-            if(transaction.direction === 'expense'){
-                const formated_str = transaction.amount?.replace(',', '.')
-                const item = parseFloat(formated_str)
-                console.log(item)
-                total -= item 
+        const calculate_total = () => {
+            let total = 0
+            transactionsTemplate.map((transaction: Transaction) => {
+                if(transaction.direction === 'expense'){
+                    const formated_str = transaction.amount?.replace(',', '.')
+                    if(formated_str){
+                        const item = parseFloat(formated_str)
+                        console.log(item)
+                        total -= item
+                    }
+                } else {
+                    const formated_str = transaction.amount?.replace(',', '.')
+                    if(formated_str){
+                        const item = parseFloat(formated_str)
+                        console.log(item)
+                        total += item
+                    }
+                }
+            })
+            if(total < 0){
+                setTotalAmount(`- R$ ${Math.abs(total).toFixed(2).toString().replace('.', ',')}`)
             } else {
-                const formated_str = transaction.amount?.replace(',', '.')
-                const item = parseFloat(formated_str)
-                console.log(item)
-                total += item 
+                setTotalAmount(`R$ ${total.toFixed(2).toString().replace('.', ',')}`)
             }
-        })
-        if(total < 0){
-            setTotalAmount(`- R$ ${Math.abs(total).toFixed(2).toString().replace('.', ',')}`)
-        } else {
-            setTotalAmount(`R$ ${total.toFixed(2).toString().replace('.', ',')}`)
         }
-    }, [transactions])
+
+        calculate_total()
+        
+    }, [transactionsTemplate])
 
     return (
         <div className="p-6 flex flex-col">
@@ -38,7 +50,7 @@ export default function TransactionsSection({ transactions, setTransactions }: {
             </StyledButton.Root>
             <StyledButton.Root type='dark'>Salvar</StyledButton.Root>
             </div>
-            <TransactionsTable transactions={transactions} setTransactions={setTransactions}/>
-        </div>
+            <TransactionsTable/>
+        </div>                                                                                                             
     )
 }

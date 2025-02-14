@@ -1,13 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Transaction } from "../../schemas/Transaction"
-import { add_transaction, update_transaction } from "../logic/transactions_ops"
 import Form from "./Form"
+import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate"
 
 const TransactionForm = ({
     type = "add",
     transaction,
-    transactions,
-    setTransactions,
     setOpen
 } : {
     type?: "add" | "update",
@@ -17,10 +15,12 @@ const TransactionForm = ({
     setOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
 
+    const {add_transaction, update_transaction} = useContext(TransactionsTemplateContext)
+
 
     const addTransaction = (new_transaction: Transaction): void => {
         
-        add_transaction(setTransactions, transactions, new_transaction)
+        add_transaction(new_transaction)
         if(setOpen){
             setOpen(false)
         }
@@ -32,7 +32,7 @@ const TransactionForm = ({
             setIncomeOrExpense(null)
         }
         
-        update_transaction(setTransactions, transactions, new_transaction)
+        update_transaction(new_transaction)
         if(setOpen){
             setOpen(false)
         }
@@ -104,50 +104,10 @@ const TransactionForm = ({
 
         return false
     }
-    
-/*     const submitForm = (validator: () => boolean, action: () => void): void => {
-        if (validator() === true) {
-            
-            console.log('valid')
-            action()
-        }
-    } */
-
-    // let btn
-    // if(type === 'update'){
-    //     btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
-    //     action={() => {
-    //         if (validateUpdateForm(
-    //                 isValidDateFormat, isValidAmountFormat,
-    //                 setInvalidDate, setInvalidAmount,
-    //                 transactionDate, transactionAmount
-    //         ) === true) {
-            
-    //             console.log('valid')
-    //             updateTransaction(new_transaction, incomeOrExpense!)
-    //         }
-    // }}
-    //     >Atualizar</StyledButton.Root>
-    // } else{
-    //     btn = <StyledButton.Root submit className='h-9 mt-8 flex' 
-    //     action={() => {
-    //         if (validateAddForm(
-    //                 isValidDateFormat, isValidAmountFormat,
-    //                 setInvalidDate, setInvalidAmount,
-    //                 transactionDate, transactionAmount
-    //         ) === true) {
-            
-    //             console.log('valid')
-    //             addTransaction(new_transaction)
-    //         }
-    // }}
-            
-    //     >Adicionar</StyledButton.Root>
-    // }
 
     return (
         <div>
-            <Form type={type} transaction={transaction} validateAddForm={validateAddForm} validateUpdateForm={validateUpdateForm} addTransaction={addTransaction} updateTransaction={updateTransaction}/>
+            <Form type={type} setOpen={setOpen} transaction={transaction} validateAddForm={validateAddForm} validateUpdateForm={validateUpdateForm} addTransaction={addTransaction} updateTransaction={updateTransaction}/>
         </div>
     )
 }
