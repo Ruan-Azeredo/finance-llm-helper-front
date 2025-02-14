@@ -1,4 +1,6 @@
-export const fake_transactions = [
+import { Transaction } from "../../schemas/Transaction"
+
+export const fake_transactions: Transaction[] = [
     {
       id: 1,
       amount: "21,00",
