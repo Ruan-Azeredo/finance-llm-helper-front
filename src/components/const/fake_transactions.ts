@@ -20,7 +20,7 @@ export const fake_transactions: Transaction[] = [
     {
       id: 3,
       amount: "0,65",
-      category: "Investimento",
+      category: "Transferencia para terceiros",
       date: "21/06/2024",
       direction: "income",
       memo: "Crédito Evento B3 * Prov * Dividendos 4                  Bbas3"
