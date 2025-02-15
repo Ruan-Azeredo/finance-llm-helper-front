@@ -138,7 +138,7 @@ function TransactionItem(
                     <p onClick={() => setOpen(true)} className="text-nowrap text-right w-full cursor-pointer">{transaction_amount}</p>
                 </td>
                 <td className={`${transaction.id} w-48 py-auto text-right text-sm font-medium sm:pr-0 overflow-visible`}>
-                    <SelectCategory transactions={transactions} setTransactions={setTransactions} listIndex={transactions.indexOf(transaction)} categories={default_categories}/>
+                    <SelectCategory transaction={transaction} categories={default_categories}/>
                 </td>
                 <td>
                     <button id={transaction.id + 'x-btn'} type="button" onClick={pre_delete_from_template}>
