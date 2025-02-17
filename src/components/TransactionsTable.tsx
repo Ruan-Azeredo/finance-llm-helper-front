@@ -150,7 +150,7 @@ function TransactionItem(
                 </td>
             </tr>
             <div className=" w-fit">
-                <button onClick={delete_from_template} id={transaction.id + 'rm-btn'} type="button" className="-mt-[54px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Remover</button>
+                <button onClick={delete_from_template} id={transaction.id + 'rm-btn'} type="button" className="-mt-[46px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto">Remover</button>
             </div>
         </tbody>
     )
