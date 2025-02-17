@@ -13,7 +13,7 @@ interface SelectCategoryProps {
 
 export default function SelectCategory({transaction, setCategory, categories}: SelectCategoryProps) {
 
-  // Caso esteja no form de criação ou atualização, deve receber só o setCategory, já caso esteja na tabela de transações, deve receber o transaction
+  // Caso esteja no form de criação ou atualização, deve receber o setCategory, já caso esteja na tabela de transações, deve receber o só transaction
 
   const { update_transaction } = useContext(TransactionsTemplateContext)
 
@@ -24,14 +24,13 @@ export default function SelectCategory({transaction, setCategory, categories}: S
     if(setCategory){
       setCategory(value)
       setSelected(value)
-    }
-
-    if(transaction){
+    } else if(transaction){
       const new_transaction = transaction
       new_transaction.category = value
 
       update_transaction(new_transaction)
     }
+
   }
 
   return (

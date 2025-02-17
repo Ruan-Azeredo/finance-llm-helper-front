@@ -212,7 +212,7 @@ const Form = ({
                         <label htmlFor='Categoria' className="block text-sm font-medium leading-6 text-gray-900 mb-2">
                             Categoria
                         </label>
-                        <SelectCategory setCategory={setTransactionCategory} categories={default_categories}/>  
+                        <SelectCategory setCategory={setTransactionCategory} transaction={transaction} categories={default_categories}/>  
                     </div>
                     <div className='h-9 flex mt-8'>
                         <span className="isolate inline-flex rounded-md shadow-sm">
