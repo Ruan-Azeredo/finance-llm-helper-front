@@ -1,69 +1,156 @@
-import ApexCharts from 'apexcharts'
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Typography,
+  } from "@material-tailwind/react";
+  import Chart from "react-apexcharts";
+  import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { colors, default_categories } from "../default_categories";
+import { useContext, useEffect, useState } from "react";
+import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate";
+import { Transaction } from "../schemas/Transaction";
+import { ApexOptions } from "apexcharts";
+import { wrap } from "module";
+   
+  // If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
+  // import dynamic from "next/dynamic";
+  // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const Chart = () => {
+  
+  
+  export default function Example() {
 
+    const { transactionsTemplate } = useContext(TransactionsTemplateContext)
+    
+    const respectiveColorToCategory = (defaultCategories: {name: string, color: number}[], colors: string[]) => {
+
+      // {category: 'Alimentação', color: '#ff0000'}
+      return defaultCategories.map((category) => ({ category: category.name, color: colors[category.color] }));
+    }
+
+    function somarPorCategoria(transacoes: Transaction[]): { category: string; total: number; colors: string }[] {
+      const resultado: Record<string, number> = {};
+      
+      transacoes.forEach(item => {
+        let valor = parseFloat(item.amount!.replace(",", "."));
+        if (!resultado[item.category!]) {
+          resultado[item.category!] = 0;
+        }
+        if (item.direction === "expense") {
+          valor = -valor;
+        }
+        resultado[item.category!] += valor;
+      });
+      
+      // { category: 'Alimentação', total: 105.50, colors: '#ff0000' }
+      const categoryColors = respectiveColorToCategory(default_categories, colors);
+      return Object.keys(resultado).map(category => {
+        const categoryColor = categoryColors.find((cat: { category: string; }) => cat.category === category)?.color || '#000000';
+        return { category, total: parseFloat(resultado[category].toFixed(2)), colors: categoryColor };
+      });
+    }
+
+
+    console.log('mi mi: ',somarPorCategoria(transactionsTemplate))
+
+    const [accordingDirection, setAccordingDirection] = useState<{ category: string; total: number; colors: string }[]>([]);
+    const [expenseOrIncome, setExpenseOrIncome] = useState<"expense" | "income">("expense");
+
+    const defineAccordingDirection = (transactionsTemplate: Transaction[]) => {
+
+      const changedArray = somarPorCategoria(transactionsTemplate).map((item) => ({
+        ...item,
+        total: item.total < 0 ? item.total * -1 : item.total
+      }))
+
+      return changedArray
+      /* return [{ category: 'Alimentação', total: 105.50, colors: '#ff0000' }] */
+      
+    }
+
+    const incomeTransactionsTemplate = transactionsTemplate.filter((transaction) => transaction.direction === "income");
+    const expenseTransactionsTemplate = transactionsTemplate.filter((transaction) => transaction.direction === "expense");
+
+    useEffect(() => {
+      setAccordingDirection(somarPorCategoria(transactionsTemplate));
+    }, [transactionsTemplate]);
+
+    const [sei, setSei] = useState(true)
+    
     const chartConfig = {
-    series: [44, 55, 13, 43, 22],
-    chart: {
-        type: "pie",
-        width: 280,
-        height: 280,
-        toolbar: {
-        show: false,
+
+      with: 400,
+      height: 340,
+      dataLabels: {
+        enabled: true,
+      },
+      series: sei ? defineAccordingDirection(expenseTransactionsTemplate).map((item) => item.total) : defineAccordingDirection(incomeTransactionsTemplate).map((item) => item.total),
+      options: {
+        chart: {
+          toolbar: {
+            show: false,
+          },
         },
-    },
-    title: {
-        show: "",
-    },
-    dataLabels: {
-        enabled: false,
-    },
-    colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"],
-    legend: {
-        show: false,
-    },
+        title: {
+          show: false,
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: sei ? defineAccordingDirection(expenseTransactionsTemplate).map((item) => item.colors) : defineAccordingDirection(incomeTransactionsTemplate).map((item) => item.colors),
+        legend: {
+          show: true,
+          position: 'bottom',
+          fontSize: '14px',
+          fontFamily: 'Inter, sans-serif',
+          clusterGroupedSeriesOrientation: 'horizontal',
+          //offsetY: 100,
+          itemMargin: {
+            horizontal: 12,
+            vertical: 5,
+            
+          },
+
+          // if length of labels is greater than 10, show only first 10
+            formatter: function (val: string[], opts: any) {
+            if (val.length > 160) {
+              return val.slice(0, 14) + "...";
+            }
+            return val;
+            }
+        },
+        labels: sei ? defineAccordingDirection(expenseTransactionsTemplate).map((item) => item.category) : defineAccordingDirection(incomeTransactionsTemplate).map((item) => item.category)
+      },
     };
-    
-    const chart = new ApexCharts(document.querySelector("#pie-chart"), chartConfig);
-    
-    chart.render();
+
+    console.log('chartConfig: ', chartConfig.labels)
+
 
     return (
-        <div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-            <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
-                <div class="w-max rounded-lg bg-gray-900 p-5 text-white">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    class="h-6 w-6"
-                >
-                    <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
-                    ></path>
-                </svg>
-                </div>
-                <div>
-                <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
-                    Pie Chart
-                </h6>
-                <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
-                    Visualize your data in a simple way using the
-                    @material-tailwind/html chart plugin.
-                </p>
-                </div>
-            </div>
-            <div class="py-6 mt-4 grid place-items-center px-2">
-                <div id="pie-chart"></div>
-            </div>
-        </div>
- 
-    )
-}
-
-export default Chart
+      <Card className="flex justify-center" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Chart type="donut" {...chartConfig} />
+            <span className="">
+              <button
+                onClick={() => setSei(false)}
+                type="button"
+                defaultChecked
+                className={`relative -ml-px inline-flex items-center rounded-l-md py-2 px-4 ${!sei ? 'bg-slate-600 text-white' : 'bg-white text-gray-900 hover:bg-gray-50'} text-sm font-semibold  ring-1 ring-inset ring-gray-300 focus:z-10`}
+              >
+                <span></span>Entrada
+              </button>
+              <button
+                onClick={() => setSei(true)}
+                type="button"
+                className={`relative -ml-px inline-flex items-center rounded-r-md py-2 px-4 ${sei ? 'bg-slate-600 text-white' : 'bg-white text-gray-900 hover:bg-gray-50'} text-sm font-semibold  ring-1 ring-inset ring-gray-300 focus:z-10`}
+              >
+                <span></span>Saída
+              </button>
+            </span>
+          </div>
+          
+      </Card>
+    );
+  }
