@@ -4,7 +4,7 @@ export default function InputCategory() {
   return (
     <div>
       <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-        Adicionar Catégoria
+        Adicionar Categoria
       </label>
       <div className="mt-2 flex rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">
@@ -13,7 +13,7 @@ export default function InputCategory() {
             id="email"
             name="email"
             type="email"
-            placeholder="catégoria"
+            placeholder="categoria"
             className="block w-full rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
