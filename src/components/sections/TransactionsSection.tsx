@@ -6,7 +6,7 @@ import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate
 
 export default function TransactionsSection() {
 
-    const { transactionsTemplate } = useContext(TransactionsTemplateContext)
+    const { transactionsTemplate, setTransactionsTemplate } = useContext(TransactionsTemplateContext)
 
     const [totalAmount, setTotalAmount] = useState('R$ 0,00')
 
@@ -37,7 +37,33 @@ export default function TransactionsSection() {
             }
         }
 
+        const calculate_chronological_order = () => {
+
+            function dataParaTimestamp(dataStr: string) {
+                // Divide a string da data
+                const [dia, mes, ano] = dataStr.split('/').map(Number);
+                // Cria um objeto Date (mês começa do zero em JavaScript)
+                const dataObj = new Date(ano, mes - 1, dia);
+                // Retorna o timestamp
+                return Math.floor(dataObj.getTime() / 1000);
+            }
+
+            const sorted = transactionsTemplate.sort((a: Transaction, b: Transaction) => {
+                if (a.date && b.date) {
+                    const dateA = dataParaTimestamp(a.date);
+                    console.log(dateA)
+                    const dateB = dataParaTimestamp(b.date);
+                    console.log(dateB)
+                    return dateA - dateB;
+                }
+                return 0;
+            });
+            console.log(sorted)
+            setTransactionsTemplate(sorted)
+        }
+
         calculate_total()
+        calculate_chronological_order()
         
     }, [transactionsTemplate])
 
