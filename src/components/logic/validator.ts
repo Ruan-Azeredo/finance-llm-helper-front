@@ -1,4 +1,7 @@
 export function isValidDateFormat(dateString: string): boolean {
+
+    if (!dateString) return false
+
     const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/
 
     const match = dateString.match(regex)
@@ -18,7 +21,15 @@ export function isValidDateFormat(dateString: string): boolean {
 }
 
 export function isValidAmountFormat(amountString: string): boolean {
+
+    if (!amountString) return false
+
     const regex = /^\d+,\d{2}$/;
 
     return regex.test(amountString);
+}
+
+export function isValidCategoryFormat(category: string | null): boolean {
+    if (category === null) return false
+    return true
 }
