@@ -1,18 +1,10 @@
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Typography,
-  } from "@material-tailwind/react";
-  import Chart from "react-apexcharts";
-  import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { Card } from "@material-tailwind/react";
+import Chart from "react-apexcharts";
 import { default_categories } from "./const/default_categories";
 import { categories_colors as colors } from "./const/colors";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate";
 import { Transaction } from "../schemas/Transaction";
-import { ApexOptions } from "apexcharts";
-import { wrap } from "module";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
    
@@ -57,9 +49,6 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
     console.log('mi mi: ',somarPorCategoria(transactionsTemplate))
 
-    const [accordingDirection, setAccordingDirection] = useState<{ category: string; total: number; colors: string }[]>([]);
-    const [expenseOrIncome, setExpenseOrIncome] = useState<"expense" | "income">("expense");
-
     const defineAccordingDirection = (transactionsTemplate: Transaction[]) => {
 
       const changedArray = somarPorCategoria(transactionsTemplate).map((item) => ({
@@ -74,10 +63,6 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
     const incomeTransactionsTemplate = transactionsTemplate.filter((transaction) => transaction.direction === "income");
     const expenseTransactionsTemplate = transactionsTemplate.filter((transaction) => transaction.direction === "expense");
-
-    useEffect(() => {
-      setAccordingDirection(somarPorCategoria(transactionsTemplate));
-    }, [transactionsTemplate]);
 
     const [sei, setSei] = useState(true)
     
@@ -96,7 +81,8 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
           },
         },
         title: {
-          show: false,
+          text: '',
+          align: 'left' as const,
         },
         dataLabels: {
           enabled: false,
@@ -104,11 +90,10 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
         colors: sei ? defineAccordingDirection(expenseTransactionsTemplate).map((item) => item.colors) : defineAccordingDirection(incomeTransactionsTemplate).map((item) => item.colors),
         legend: {
           show: true,
-          position: 'bottom',
+          position: 'bottom' as const,
           fontSize: '12px',
           fontFamily: "Geist",
           clusterGroupedSeriesOrientation: 'horizontal',
-          //offsetY: 100,
           itemMargin: {
             horizontal: 10,
             vertical: 5,
@@ -116,7 +101,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
           },
 
           // if length of labels is greater than 10, show only first 10
-            formatter: function (val: string[], opts: any) {
+            formatter: function (val: string) {
             if (val.length > 160) {
               return val.slice(0, 14) + "...";
             }
@@ -126,9 +111,6 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
         labels: sei ? defineAccordingDirection(expenseTransactionsTemplate).map((item) => item.category) : defineAccordingDirection(incomeTransactionsTemplate).map((item) => item.category)
       },
     };
-
-    console.log('chartConfig: ', chartConfig.labels)
-
 
     return (
       <Card className="flex justify-center" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
