@@ -6,7 +6,8 @@ import {
   } from "@material-tailwind/react";
   import Chart from "react-apexcharts";
   import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
-import { colors, default_categories } from "../default_categories";
+import { default_categories } from "./const/default_categories";
+import { categories_colors as colors } from "./const/colors";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate";
 import { Transaction } from "../schemas/Transaction";

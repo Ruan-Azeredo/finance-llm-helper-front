@@ -1,5 +1,6 @@
 import { ArrowUturnLeftIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { colors, default_categories } from "../default_categories"
+import { default_categories } from "./const/default_categories"
+import { categories_colors as colors } from "./const/colors"
 import SelectCategory from "./SelectCategory"
 import { useContext, useState } from "react"
 import { Modal }from "./micro/Modal"

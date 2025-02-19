@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { colors, default_categories } from "../default_categories"
+import { default_categories } from "../components/const/default_categories"
+import {categories_colors as colors} from "../components/const/colors"
 import Chart from "../components/Chart"
 import AwaitModal from "../components/AwaitModal"
 import InputCategory from "../components/InputCategory"

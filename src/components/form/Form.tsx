@@ -5,11 +5,10 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { isValidAmountFormat, isValidCategoryFormat, isValidDateFormat } from "../logic/validator"
 import { Transaction } from "../../schemas/Transaction"
 import SelectCategory from "../SelectCategory"
-import { colors, default_categories } from "../../default_categories"
+import { default_categories } from "../const/default_categories"
+import { categories_colors as colors } from "../const/colors"
 import { CheckCircleIcon } from "@heroicons/react/20/solid"
-import { motion, AnimatePresence } from "framer-motion";
 import { useAnimate } from "motion/react"
-import { stagger } from "motion"
 
 const Form = ({
     type = "add",
@@ -239,12 +238,6 @@ const Form = ({
                         validationError={invalidDate}
                         invalidMessage='Utilize uma data válida e com o formato DD/MM/AAAA'
                     />
-                    {/* <InputText.Root
-                        label='Categoria'
-                        className='w-full'
-                        defaultValue={transaction?.category ?? undefined}
-                        onChange={(e) => setTransactionCategory(e.target.value)}
-                    /> */}
                     <div className=''>
                         <label htmlFor='Categoria' className="block text-sm font-medium leading-6 text-gray-900 mb-2">
                             Categoria
