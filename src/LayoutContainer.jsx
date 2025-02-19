@@ -35,7 +35,7 @@ export default function LayoutContainer() {
         <body class="h-full">
         ```
       */}
-      <div className="flex flex-col min-h-screen bg-gradient-to-tr from-slate-200 to-slate-50">
+      <div className="flex flex-col min-h-screen bg-slate-100">
         <Popover as="header" className="pb-24 mx-6 rounded-b-xl bg-gradient-to-br from-slate-900 to-slate-700">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="relative flex items-center justify-center py-5 lg:justify-between">
