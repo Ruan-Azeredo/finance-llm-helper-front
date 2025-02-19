@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { default_categories } from "../default_categories"
+import { colors, default_categories } from "../default_categories"
 import Chart from "../components/Chart"
 import AwaitModal from "../components/AwaitModal"
 import InputCategory from "../components/InputCategory"
@@ -10,6 +10,11 @@ import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
 import { fake_transactions } from "../components/const/fake_transactions"
 
+interface Category {
+  name: string
+  color: number
+}
+
 const AddTransactions = () => {
 
   const [transactions, setTransactions] = useState<Transaction[]>(fake_transactions)
@@ -17,13 +22,13 @@ const AddTransactions = () => {
   
 
 
-    const Categories = ({ categories }: { categories: string[]}) => {
+    const Categories = ({ categories }: { categories: Category[]}) => {
       return (
         <>
           <InputCategory/>
-          <div className='mt-4 flex flex-wrap gap-1'>
+          <div className='mt-4 flex flex-wrap gap-2'>
             {categories.map((category) => (
-              <BadgeCategory key={category} category={category}/>
+              <BadgeCategory key={category.name} category={category} colorsList={colors}/>
             ))}
           </div>
         </>
