@@ -4,12 +4,14 @@ const Root = ({
     children,
     type,
     action,
-    className
+    className,
+    disabled,
 } : {
     children: React.ReactNode,
     type?: "primary" | "secondary" | "dark",
     action?: () => void,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) => {
 
     let sty
@@ -22,7 +24,7 @@ const Root = ({
     }
 
     return (
-        <button type="button" onClick={action} className={`items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold ${sty} shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${className}`}>
+        <button type="button" onClick={action} disabled={disabled} className={`items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold ${sty} shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${className}`}>
             {children}
         </button>
     )
