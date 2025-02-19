@@ -39,9 +39,9 @@ const TransactionForm = ({
     }
 
     const validateAddForm = (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean, isValidCategoryFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>, setInvalidCategory: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string, transactionCategory: null | string
     ): boolean => {
 
         let allValid = true
@@ -61,17 +61,24 @@ const TransactionForm = ({
             setInvalidAmount(false)
         }
 
-        if(isValidDateFormat(transactionDate!) && isValidAmountFormat(transactionAmount!) && allValid){
+        if(!isValidCategoryFormat(transactionCategory!)){
+            setInvalidCategory(true)
+            allValid = false
+        } else{
+            setInvalidCategory(false)
+        }
+
+        if(isValidDateFormat(transactionDate!) && isValidAmountFormat(transactionAmount!) && isValidCategoryFormat(transactionCategory!) && allValid){
             return true
         }
-        
+
         return false
     }
 
     const validateUpdateForm = (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean, isValidCategoryFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>, setInvalidCategory: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string, transactionCategory: null | string
     ): boolean => {
         
         let allValid = true
@@ -80,8 +87,9 @@ const TransactionForm = ({
             if(!isValidDateFormat(transactionDate!)){
                 setInvalidDate(true)
                 allValid = false
+            } else{
+                setInvalidDate(false)
             }
-            setInvalidDate(false)
         } else{
             setInvalidDate(false)
         }
@@ -90,10 +98,22 @@ const TransactionForm = ({
             if(!isValidAmountFormat(transactionAmount!)){
                 setInvalidAmount(true)
                 allValid = false
+            } else{
+                setInvalidAmount(false)
             }
-            setInvalidAmount(false)
         } else{
             setInvalidAmount(false)
+        }
+
+        if(transactionCategory !== null){
+            if(!isValidCategoryFormat(transactionAmount!)){
+                setInvalidCategory(true)
+                allValid = false
+            } else{
+                setInvalidCategory(false)
+            }
+        } else{
+            setInvalidCategory(false)
         }
         
         if(

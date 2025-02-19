@@ -2,10 +2,14 @@ import { useState } from "react"
 import { InputText } from "../micro/InputText"
 import { StyledButton } from "../micro/StyledButton"
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline"
-import { isValidAmountFormat, isValidDateFormat } from "../logic/validator"
+import { isValidAmountFormat, isValidCategoryFormat, isValidDateFormat } from "../logic/validator"
 import { Transaction } from "../../schemas/Transaction"
 import SelectCategory from "../SelectCategory"
-import { default_categories } from "../../default_categories"
+import { colors, default_categories } from "../../default_categories"
+import { CheckCircleIcon } from "@heroicons/react/20/solid"
+import { motion, AnimatePresence } from "framer-motion";
+import { useAnimate } from "motion/react"
+import { stagger } from "motion"
 
 const Form = ({
     type = "add",
@@ -20,14 +24,14 @@ const Form = ({
     setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
     transaction?: Transaction,
     validateAddForm: (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean, isValidCategoryFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>, setInvalidCategory: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string, transactionCategory: null | string
     ) => boolean,
     validateUpdateForm: (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
+        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean, isValidCategoryFormat: (data: string) => boolean,
+        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>, setInvalidCategory: React.Dispatch<React.SetStateAction<boolean>>,
+        transactionDate: null | string, transactionAmount: null | string, transactionCategory: null | string
     ) => boolean,
     addTransaction: (transaction: Transaction) => void,
     updateTransaction: (new_transaction: Transaction, incomeOrExpense: "income" | "expense", setIncomeOrExpense: React.Dispatch<React.SetStateAction<"income" | "expense" | null>>) => void
@@ -39,7 +43,10 @@ const Form = ({
     const [invalidAmount, setInvalidAmount] = useState<boolean>(false)
     const [transactionDate, setTransactionDate] = useState<null | string>(null)
     const [invalidDate, setInvalidDate] = useState<boolean>(false)
+    const [invalidCategory, setInvalidCategory] = useState<boolean>(false)
     const [transactionCategory, setTransactionCategory] = useState<null | string>(null)
+
+    const [checked, setChecked] = useState<boolean>(false)
 
     
     const new_transaction: Transaction = {
@@ -140,36 +147,66 @@ const Form = ({
         }
     } */
 
+    const [scope, animate] = useAnimate()
+
+    const onButtonClick = () => {
+        animate([
+            [".addName", { y: -32, display: "none" }, { duration: 0.2, delay: 0 }],
+            [".icon", { scale: 1, display: "block" }, { duration: 0.2, delay: 0 }],
+            [".icon", { scale: 0, display: "none" }, { duration: 0.4, delay: 0.4 }],
+            [".addName", { y: 0, display: "block" }, { duration: 0.4, delay: 0 }],
+        ]);
+        setChecked(true)
+        setTimeout(() => setChecked(false), 1300)
+    }
+
     let btn
     if(type === 'update'){
         btn = <StyledButton.Root className='h-9 mt-8 flex' 
         action={() => {
             if (validateUpdateForm(
-                    isValidDateFormat, isValidAmountFormat,
-                    setInvalidDate, setInvalidAmount,
-                    transactionDate, transactionAmount
+                    isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
+                    setInvalidDate, setInvalidAmount, setInvalidCategory,
+                    transactionDate, transactionAmount, transactionCategory
             ) === true) {
             
                 console.log('valid')
                 updateTransaction(new_transaction, incomeOrExpense!, setIncomeOrExpense)
+            } else{
+                console.log('invalid update', transactionDate, transactionAmount, transactionCategory)
             }
     }}
         >Atualizar</StyledButton.Root>
     } else{
-        btn = <StyledButton.Root className='h-9 mt-8 flex' 
+        btn = <StyledButton.Root className='checkButton h-9 mt-8 flex disabled:cursor-not-allowed overflow-hidden' 
         action={() => {
             if (validateAddForm(
-                    isValidDateFormat, isValidAmountFormat,
-                    setInvalidDate, setInvalidAmount,
-                    transactionDate, transactionAmount
+                    isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
+                    setInvalidDate, setInvalidAmount, setInvalidCategory,
+                    transactionDate, transactionAmount, transactionCategory
             ) === true) {
             
                 console.log('valid')
                 addTransaction(new_transaction)
+
+                /* setTimeout(() => {
+                    setChecked(true)
+                }, 300)
+                setTimeout(() => {
+                    setChecked(false)
+                }, 5000) */
+
+                onButtonClick()
+            } else{
+                console.log('invalid add', transactionDate, transactionAmount, transactionCategory)
             }
-    }}
+        }}
+        disabled={checked}
             
-        >Adicionar</StyledButton.Root>
+        >
+            <div className="addName">Adicionar</div>
+            <CheckCircleIcon className="icon w-6 h-6 mx-[20px] scale-0 hidden" />
+        </StyledButton.Root>
     }
 
     return (
@@ -192,7 +229,7 @@ const Form = ({
                     <InputText.AddOn text='R$'/>
                 </InputText.Root>
             </div>
-            <div className='mt-2'>
+            <div className='mt-4'>
                 <div className='flex gap-4'>
                     <InputText.Root
                         label='Data'
@@ -212,7 +249,14 @@ const Form = ({
                         <label htmlFor='Categoria' className="block text-sm font-medium leading-6 text-gray-900 mb-2">
                             Categoria
                         </label>
-                        <SelectCategory setCategory={setTransactionCategory} transaction={transaction} categories={default_categories}/>  
+                        <SelectCategory 
+                            setCategory={setTransactionCategory}
+                            transaction={transaction}
+                            categories={default_categories}
+                            colors={colors}
+                            validationError={invalidCategory}
+                            invalidMessage='Defina uma categoria'
+                        />  
                     </div>
                     <div className='h-9 flex mt-8'>
                         <span className="isolate inline-flex rounded-md shadow-sm">
@@ -238,7 +282,7 @@ const Form = ({
                         {btn}
                     </div>
                 </div>
-                <div className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
+                <div ref={scope} className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
                     <StyledButton.Root type="secondary" className={`mr-4 h-9 mt-8 flex ${type === 'add' ? 'hidden' : 'justify-end'}`} action={() => setOpen && setOpen(false)}>Cancelar</StyledButton.Root>
                     {btn}
                 </div>
