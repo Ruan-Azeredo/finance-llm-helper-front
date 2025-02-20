@@ -1,20 +1,19 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { default_categories } from "../components/const/default_categories"
 import {categories_colors as colors} from "../components/const/colors"
 import AwaitModal from "../components/AwaitModal"
 import InputCategory from "../components/InputCategory"
 import BadgeCategory from "../components/BadgeCategory"
 import AddTransactionSection from "../components/sections/AddTransactionSection"
-import { Transaction } from "../schemas/Transaction"
 import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
-import { fake_transactions } from "../components/const/fake_transactions"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 import { Category } from "../schemas/Category"
+import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate"
 
 const AddTransactions = () => {
 
-  const [transactions, setTransactions] = useState<Transaction[]>(fake_transactions)
+  const { transactionsTemplate, setTransactionsTemplate } = useContext(TransactionsTemplateContext)
   const [analyzeReqSended, setAnalyzeReqSended] = useState<boolean>(false)
   
 
@@ -41,10 +40,10 @@ const AddTransactions = () => {
             {/* Left column */}
             <div className="grid grid-cols-1 gap-4 lg:col-span-2">
               <SectionContainer title="Add Transaction buttons">
-                <AddTransactionSection transactions={transactions} setTransactions={setTransactions} setAnalyzeReqSended={setAnalyzeReqSended}/>
+                <AddTransactionSection transactions={transactionsTemplate} setTransactions={setTransactionsTemplate} setAnalyzeReqSended={setAnalyzeReqSended}/>
               </SectionContainer>
 
-              {transactions.length > 0 ? (
+              {transactionsTemplate.length > 0 ? (
                 <SectionContainer title="Transações">
                   <TransactionsSection/>
                 </SectionContainer>
@@ -64,11 +63,13 @@ const AddTransactions = () => {
                   <Categories categories={default_categories}/>
                 </div>
               </SectionContainer>
-              <SectionContainer title="Chart">
-                  <div className="p-6">
-                    <TransactionsDonutChart/>
-                  </div>
-              </SectionContainer>
+              {transactionsTemplate.length > 0 ? (
+                <SectionContainer title="Chart">
+                    <div className="p-6">
+                      <TransactionsDonutChart/>
+                    </div>
+                </SectionContainer>
+              ) : null}
             </div>
           </div>
         </>
