@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { default_categories } from "../components/const/default_categories"
 import {categories_colors as colors} from "../components/const/colors"
-import Chart from "../components/Chart"
 import AwaitModal from "../components/AwaitModal"
 import InputCategory from "../components/InputCategory"
 import BadgeCategory from "../components/BadgeCategory"
@@ -10,6 +9,7 @@ import { Transaction } from "../schemas/Transaction"
 import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
 import { fake_transactions } from "../components/const/fake_transactions"
+import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 
 interface Category {
   name: string
@@ -70,7 +70,7 @@ const AddTransactions = () => {
               </SectionContainer>
               <SectionContainer title="Chart">
                   <div className="p-6">
-                    <Chart/>
+                    <TransactionsDonutChart/>
                   </div>
               </SectionContainer>
             </div>
