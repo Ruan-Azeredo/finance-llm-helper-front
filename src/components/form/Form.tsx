@@ -7,8 +7,7 @@ import { Transaction } from "../../schemas/Transaction"
 import SelectCategory from "../SelectCategory"
 import { default_categories } from "../const/default_categories"
 import { categories_colors as colors } from "../const/colors"
-import { CheckCircleIcon } from "@heroicons/react/20/solid"
-import { useAnimate } from "motion/react"
+import AddTransactionButton from "../AddTransactionButton"
 
 const Form = ({
     type = "add",
@@ -45,8 +44,6 @@ const Form = ({
     const [invalidCategory, setInvalidCategory] = useState<boolean>(false)
     const [transactionCategory, setTransactionCategory] = useState<null | string>(null)
 
-    const [checked, setChecked] = useState<boolean>(false)
-
     
     const new_transaction: Transaction = {
         id:  transaction?.id ?? crypto.randomUUID(),
@@ -57,155 +54,40 @@ const Form = ({
         direction: incomeOrExpense ?? transaction?.direction ?? null
     }
 
-    /* const addTransaction = (new_transaction: Transaction): void => {
-        
-        add_transaction(setTransactions, transactions, new_transaction)
-    }
-
-    const updateTransaction = (new_transaction: Transaction, incomeOrExpense: "income" | "expense"): void => {
-
-        if(incomeOrExpense === transaction?.direction){
-            setIncomeOrExpense(null)
-        }
-        
-        update_transaction(setTransactions, transactions, new_transaction)
-    }
-
-    const validateAddForm = (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
-    ): boolean => {
-
-        let allValid = true
-        console.log(transactionDate, transactionAmount)
-        
-        if(!isValidDateFormat(transactionDate!)){
-            setInvalidDate(true)
-            allValid = false
-        } else{
-            setInvalidDate(false)
-        }
-        
-        if(!isValidAmountFormat(transactionAmount!)){
-            setInvalidAmount(true)
-            allValid = false
-        } else{
-            setInvalidAmount(false)
-        }
-
-        if(isValidDateFormat(transactionDate!) && isValidAmountFormat(transactionAmount!) && allValid){
-            return true
-        }
-        
-        return false
-    }
-
-    const validateUpdateForm = (
-        isValidDateFormat: (data: string) => boolean, isValidAmountFormat: (data: string) => boolean,
-        setInvalidDate: React.Dispatch<React.SetStateAction<boolean>>, setInvalidAmount: React.Dispatch<React.SetStateAction<boolean>>,
-        transactionDate: null | string, transactionAmount: null | string
-    ): boolean => {
-        
-        let allValid = true
-        
-        if(transactionDate !== null){
-            if(!isValidDateFormat(transactionDate!)){
-                setInvalidDate(true)
-                allValid = false
-            }
-            setInvalidDate(false)
-        } else{
-            setInvalidDate(false)
-        }
-        
-        if(transactionAmount !== null){
-            if(!isValidAmountFormat(transactionAmount!)){
-                setInvalidAmount(true)
-                allValid = false
-            }
-            setInvalidAmount(false)
-        } else{
-            setInvalidAmount(false)
-        }
-        
-        if(
-            allValid
-        ){
-            return true
-        }
-
-        return false
-    } */
-    
-/*     const submitForm = (validator: () => boolean, action: () => void): void => {
-        if (validator() === true) {
-            
-            console.log('valid')
-            action()
-        }
-    } */
-
-    const [scope, animate] = useAnimate()
-
-    const onButtonClick = () => {
-        animate([
-            [".addName", { y: -32, display: "none" }, { duration: 0.2, delay: 0 }],
-            [".icon", { scale: 1, display: "block" }, { duration: 0.2, delay: 0 }],
-            [".icon", { scale: 0, display: "none" }, { duration: 0.4, delay: 0.4 }],
-            [".addName", { y: 0, display: "block" }, { duration: 0.4, delay: 0 }],
-        ]);
-        setChecked(true)
-        setTimeout(() => setChecked(false), 1300)
-    }
-
     let btn
     if(type === 'update'){
         btn = <StyledButton.Root className='h-9 mt-8 flex' 
-        action={() => {
-            if (validateUpdateForm(
-                    isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
-                    setInvalidDate, setInvalidAmount, setInvalidCategory,
-                    transactionDate, transactionAmount, transactionCategory
-            ) === true) {
-            
-                console.log('valid')
-                updateTransaction(new_transaction, incomeOrExpense!, setIncomeOrExpense)
-            } else{
-                console.log('invalid update', transactionDate, transactionAmount, transactionCategory)
-            }
-    }}
-        >Atualizar</StyledButton.Root>
+            action={() => {
+                if (validateUpdateForm(
+                        isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
+                        setInvalidDate, setInvalidAmount, setInvalidCategory,
+                        transactionDate, transactionAmount, transactionCategory
+                ) === true) {
+                
+                    console.log('valid')
+                    updateTransaction(new_transaction, incomeOrExpense!, setIncomeOrExpense)
+                } else{
+                    console.log('invalid update', transactionDate, transactionAmount, transactionCategory)
+                }
+            }}
+            >Atualizar</StyledButton.Root>
     } else{
-        btn = <StyledButton.Root className='checkButton h-9 mt-8 flex disabled:cursor-not-allowed overflow-hidden' 
-        action={() => {
-            if (validateAddForm(
-                    isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
-                    setInvalidDate, setInvalidAmount, setInvalidCategory,
-                    transactionDate, transactionAmount, transactionCategory
-            ) === true) {
-            
-                console.log('valid')
-                addTransaction(new_transaction)
+        btn = <AddTransactionButton
+            action={() => {
+                if (validateAddForm(
+                        isValidDateFormat, isValidAmountFormat, isValidCategoryFormat,
+                        setInvalidDate, setInvalidAmount, setInvalidCategory,
+                        transactionDate, transactionAmount, transactionCategory
+                ) === true) {
+                
+                    console.log('valid')
+                    addTransaction(new_transaction)
 
-                /* setTimeout(() => {
-                    setChecked(true)
-                }, 300)
-                setTimeout(() => {
-                    setChecked(false)
-                }, 5000) */
-
-                onButtonClick()
-            } else{
-                console.log('invalid add', transactionDate, transactionAmount, transactionCategory)
-            }
-        }}
-        disabled={checked}
-            
-        >
-            <div className="addName">Adicionar</div>
-            <CheckCircleIcon className="icon w-6 h-6 mx-[20px] scale-0 hidden" />
-        </StyledButton.Root>
+                } else{
+                    console.log('invalid add', transactionDate, transactionAmount, transactionCategory)
+                }
+            }}
+        />
     }
 
     return (
@@ -275,7 +157,7 @@ const Form = ({
                         {btn}
                     </div>
                 </div>
-                <div ref={scope} className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
+                <div className={`flex ${type === 'add' ? 'xl:hidden' : 'justify-end'}`}>
                     <StyledButton.Root type="secondary" className={`mr-4 h-9 mt-8 flex ${type === 'add' ? 'hidden' : 'justify-end'}`} action={() => setOpen && setOpen(false)}>Cancelar</StyledButton.Root>
                     {btn}
                 </div>
