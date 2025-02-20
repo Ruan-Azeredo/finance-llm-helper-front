@@ -10,11 +10,7 @@ import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
 import { fake_transactions } from "../components/const/fake_transactions"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
-
-interface Category {
-  name: string
-  color: number
-}
+import { Category } from "../schemas/Category"
 
 const AddTransactions = () => {
 

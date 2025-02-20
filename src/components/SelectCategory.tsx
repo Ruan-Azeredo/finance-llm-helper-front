@@ -4,11 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import { TransactionsTemplateContext } from '../contexts/TransactionsTemplate'
 import { Transaction } from '../schemas/Transaction'
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid"
-
-interface Category {
-  name: string
-  color: number
-}
+import { Category } from '../schemas/Category'
 
 interface SelectCategoryProps {
   transaction?: Transaction

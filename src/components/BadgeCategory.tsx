@@ -1,12 +1,6 @@
-interface Category {
-    name: string
-    color: number
-  }
+import { Category } from "../schemas/Category"
 
 export default function BadgeCategory({ category, colorsList }: { category: Category, colorsList: string[]}) {
-
-
-    console.log(colorsList[category.color])
 
     return (
         <div className="rounded-md bg-gray-50 pt-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
