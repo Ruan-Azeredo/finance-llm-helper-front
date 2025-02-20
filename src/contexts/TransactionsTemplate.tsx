@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Transaction } from "../schemas/Transaction";
 import { fake_transactions } from "../components/const/fake_transactions";
+import { calculate_chronological_order } from "../components/logic/transactions_operations";
 
 interface TransactionsTemplateContextType {
 
@@ -23,11 +24,17 @@ export const TransactionsTemplateContext = createContext<TransactionsTemplateCon
 export function TransactionsTemplateProvider({ children } : { children: React.ReactNode }) {
 
     const [transactionsTemplate, setTransactionsTemplate] = useState<Transaction[]>([])
-
+    
     // use fake transactions
     useEffect(() => {
         setTransactionsTemplate(fake_transactions)
     }, [])
+
+    useEffect(() => {
+        if (transactionsTemplate.length > 0) {
+            setTransactionsTemplate(calculate_chronological_order(transactionsTemplate))
+        }
+    }, [transactionsTemplate])
 
     const add_transaction = (transaction: Transaction) => {
         setTransactionsTemplate([...transactionsTemplate, transaction])

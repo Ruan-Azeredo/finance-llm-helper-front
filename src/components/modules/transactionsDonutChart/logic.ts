@@ -2,13 +2,13 @@ import { Transaction } from "../../../schemas/Transaction";
 import { categories_colors as colors } from "../../const/colors";
 import { default_categories } from "../../const/default_categories";
 
-const respectiveColorToCategory = (defaultCategories: {name: string, color: number}[], colors: string[]) => {
+const respectiveColorToCategory = (defaultCategories: {name: string, color: number}[], colors: string[]) : { category: string; color: string }[] => {
 
     // {category: 'Alimentação', color: '#ff0000'}
     return defaultCategories.map((category) => ({ category: category.name, color: colors[category.color] }));
 }
 
-function somarPorCategoria(transacoes: Transaction[]): { category: string; total: number; colors: string }[] {
+function sumByCategoria(transacoes: Transaction[]): { category: string; total: number; colors: string }[] {
     const resultado: Record<string, number> = {};
 
     transacoes.forEach(item => {
@@ -22,8 +22,9 @@ function somarPorCategoria(transacoes: Transaction[]): { category: string; total
         resultado[item.category!] += valor;
     });
 
-    // { category: 'Alimentação', total: 105.50, colors: '#ff0000' }
-    const categoryColors = respectiveColorToCategory(default_categories, colors);
+    const categoryColors = respectiveColorToCategory(default_categories, colors)
+
+    // [{ category: 'Alimentação', total: -105.50, colors: '#ff0000' }]
     return Object.keys(resultado).map(category => {
         const categoryColor = categoryColors.find((cat: { category: string; }) => cat.category === category)?.color || '#000000';
         return { category, total: parseFloat(resultado[category].toFixed(2)), colors: categoryColor };
@@ -31,9 +32,9 @@ function somarPorCategoria(transacoes: Transaction[]): { category: string; total
 }
 
 
-const defineAccordingDirection = (transactionsTemplate: Transaction[]) => {
+const makeCategoryPositive = (transactionsTemplate: Transaction[]) : { category: string; total: number; colors: string }[] => {
 
-    const changedArray = somarPorCategoria(transactionsTemplate).map((item) => ({
+    const changedArray = sumByCategoria(transactionsTemplate).map((item) => ({
         ...item,
         total: item.total < 0 ? item.total * -1 : item.total
     }))
@@ -51,8 +52,8 @@ const expenseTransactionsTemplate = (transactionsTemplate: Transaction[]) => {
 }
 
 export const treatedTransactionsTemplate = (transactionsTemplate: Transaction[]) => {
-    const expense = defineAccordingDirection(expenseTransactionsTemplate(transactionsTemplate))
-    const income = defineAccordingDirection(incomeTransactionsTemplate(transactionsTemplate))
+    const expense = makeCategoryPositive(expenseTransactionsTemplate(transactionsTemplate))
+    const income = makeCategoryPositive(incomeTransactionsTemplate(transactionsTemplate))
     return {
         expenseSeries: expense.map((item) => item.total),
         incomeSeries: income.map((item) => item.total),
