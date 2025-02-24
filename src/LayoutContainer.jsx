@@ -10,6 +10,9 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import AddTransactions from './pages/AddTransactions'
+import RequestAnswer from './components/RequestAnswer'
+import { RequisitionsManagerContext } from './contexts/RequisitionsManager'
+import { useContext } from 'react'
 
 const user = {
   name: 'Tom Cook',
@@ -25,6 +28,9 @@ const userNavigation = [
 ]
 
 export default function LayoutContainer() {
+
+  const { respData } = useContext(RequisitionsManagerContext)
+
   return (
     <>
       {/*
@@ -201,6 +207,7 @@ export default function LayoutContainer() {
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             
             <AddTransactions/>
+            {respData && <RequestAnswer respData={respData}/>}
 
           </div>
         </main>
