@@ -13,6 +13,7 @@ import AddTransactions from './pages/AddTransactions'
 import RequestAnswer from './components/RequestAnswer'
 import { RequisitionsManagerContext } from './contexts/RequisitionsManager'
 import { useContext } from 'react'
+import { Outlet } from 'react-router'
 
 const user = {
   name: 'Tom Cook',
@@ -51,7 +52,7 @@ export default function LayoutContainer() {
                   <span className="sr-only">Your Company</span>
                   <img
                     alt="Your Company"
-                    src="src/assets/spendlyzer-full-logo.png"
+                    src="src/assets/spendlyzer-full-dark-logo.png"
                     className="h-12 w-auto"
                   />
                 </a>
@@ -206,7 +207,7 @@ export default function LayoutContainer() {
         <main className="flex-grow -mt-24 pb-8">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             
-            <AddTransactions/>
+            <Outlet/>
             {respData && <RequestAnswer respData={respData}/>}
 
           </div>
