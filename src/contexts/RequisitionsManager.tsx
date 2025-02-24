@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { Transaction } from "../schemas/Transaction";
+import { AuthContext } from "./Auth";
 
 interface RequisitionsManagerContextType { 
     instance: AxiosInstance | null
@@ -16,16 +17,9 @@ export const RequisitionsManagerContext = createContext<RequisitionsManagerConte
 
 export function RequisitionsManagerProvider({ children } : { children: React.ReactNode }) {
 
+    const { instance } = useContext(AuthContext)
+
     const [respData, setRespData] = useState<AxiosResponse | AxiosError | null>(null)
-    
-    const instance = axios.create({
-        baseURL: 'http://127.0.0.1:8000',
-        headers: {
-            common: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJydWFuQGdtaWwuY29tIiwiZXhwIjoxNzQwNDA2MDE4fQ.VlhIdJncHlsboP1RNfzI9MoqqGEGa7IZEa2-T5uWth8`
-            }
-        }
-    })
 
     const saveTransactions = async (transactions: Transaction[]) => {
         try {
