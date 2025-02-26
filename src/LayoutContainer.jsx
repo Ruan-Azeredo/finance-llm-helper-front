@@ -14,6 +14,7 @@ import RequestAnswer from './components/RequestAnswer'
 import { RequisitionsManagerContext } from './contexts/RequisitionsManager'
 import { useContext } from 'react'
 import { Outlet } from 'react-router'
+import { AuthContext } from './contexts/Auth'
 
 const user = {
   name: 'Tom Cook',
@@ -22,16 +23,18 @@ const user = {
     'https://api.dicebear.com/9.x/micah/svg?seed=Eden&baseColor=f9c9b6,ac6651&mouth=laughing,pucker,smile,smirk,surprised&backgroundColor=b6e3f4',
 }
 
-const userNavigation = [
-  { name: 'Perfil', href: '#' },
-  { name: 'Configurações', href: '#' },
-  { name: 'Sair', href: '#' },
-]
 
 export default function LayoutContainer() {
-
+  
   const { respData } = useContext(RequisitionsManagerContext)
-
+  const { signOut } = useContext(AuthContext)
+  
+  const userNavigation = [
+    { name: 'Perfil', href: '#' },
+    { name: 'Configurações', href: '#' },
+    { name: 'Sair', href: '#', onClick: signOut},
+  ]
+    
   return (
     <>
       {/*
@@ -84,7 +87,7 @@ export default function LayoutContainer() {
                   >
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>
-                        <a href={item.href} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                        <a href={item.href} onClick={item.onClick} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                           {item.name}
                         </a>
                       </MenuItem>
@@ -193,6 +196,7 @@ export default function LayoutContainer() {
                       <a
                         key={item.name}
                         href={item.href}
+                        onClick={item.onClick}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
                       >
                         {item.name}
