@@ -9,7 +9,15 @@ import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate"
 import { Transaction } from "../schemas/Transaction"
 
 function TransactionItem(
-    {transaction, transactions, setTransactions}: {transaction: Transaction, transactions: Transaction[], setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>}
+    {
+        transaction,
+        transactions,
+        setTransactions
+    } : {
+        transaction: Transaction,
+        transactions: Transaction[],
+        setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>
+    }
 ){
 
     const { delete_transaction } = useContext(TransactionsTemplateContext)
