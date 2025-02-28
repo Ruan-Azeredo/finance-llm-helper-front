@@ -1,36 +1,17 @@
 import { useContext, useState } from "react"
 import { default_categories } from "../components/const/default_categories"
-import {categories_colors as colors} from "../components/const/colors"
 import AwaitModal from "../components/AwaitModal"
-import InputCategory from "../components/InputCategory"
-import BadgeCategory from "../components/BadgeCategory"
 import AddTransactionSection from "../components/sections/AddTransactionSection"
 import SectionContainer from "../components/SectionContainer"
 import TransactionsSection from "../components/sections/TransactionsSection"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
-import { Category } from "../schemas/Category"
 import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate"
+import Categories from "../components/Categories"
 
 const AddTransactions = () => {
 
   const { transactionsTemplate, setTransactionsTemplate } = useContext(TransactionsTemplateContext)
   const [analyzeReqSended, setAnalyzeReqSended] = useState<boolean>(false)
-  
-
-
-    const Categories = ({ categories }: { categories: Category[]}) => {
-      return (
-        <>
-          <InputCategory/>
-          <div className='mt-4 flex flex-wrap gap-2'>
-            {categories.map((category) => (
-              <BadgeCategory key={category.name} category={category} colorsList={colors}/>
-            ))}
-          </div>
-        </>
-      )
-    }   
-  
 
     return (
         <>
