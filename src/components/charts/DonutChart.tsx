@@ -32,8 +32,17 @@ interface chartConfigProps {
           vertical: number;
         };
         formatter?: (val: string) => string;
+        markers: {
+          size: number;
+        }
       };
       labels: string[];
+      tooltip?: {
+        theme: string;
+        marker: {
+          show: boolean;
+        };
+      };
     };
   }
 
@@ -72,13 +81,35 @@ const DonutChart = ({series, colors, labels} : {series: number[], colors: string
               vertical: 5,
               
             },
+            markers: {
+              size: 5,
+            },
+          },
+          tooltip: {
+            theme: 'custom-dark',
+            marker: {
+              show: false,
+            },
           },
           labels: labels,
         },
       };
 
     return (
+      <>
         <Chart type="donut" {...chartConfig} />
+        <style>
+          {`
+            .apexcharts-theme-custom-dark {
+              background: rgba(30, 30, 30, .8); !important;
+            }
+            .apexcharts-theme-custom-dark .apexcharts-tooltip-series-group {
+              color: white !important;
+            }
+
+          `}
+        </style>
+      </>
     )
 }
 
