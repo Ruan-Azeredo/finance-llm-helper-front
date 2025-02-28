@@ -47,7 +47,7 @@ const AddTransactions = () => {
               {transactionsTemplate.length > 0 ? (
                 <SectionContainer title="Chart">
                     <div className="p-6">
-                      <TransactionsDonutChart/>
+                      <TransactionsDonutChart transactions={transactionsTemplate}/>
                     </div>
                 </SectionContainer>
               ) : null}

@@ -1,3 +1,4 @@
+import { fake_transactions } from "../components/const/fake_transactions"
 import Categories from "../components/Categories"
 import BarChart from "../components/charts/BarChart"
 import TwoLinesChart from "../components/charts/TwoLinesChart"
@@ -7,6 +8,7 @@ import SectionContainer from "../components/SectionContainer"
 import TransactionsTable from "../components/TransactionsTable"
 
 const Dashboard = () => {
+
     const stats = [
         {
             name: 'Saldo',
@@ -61,7 +63,7 @@ const Dashboard = () => {
                     </SectionContainer>
                     <SectionContainer title="Goals" className="min-w-80">
                         <div className="p-6">
-                            <TransactionsDonutChart/>
+                            <TransactionsDonutChart transactions={fake_transactions}/>
                         </div>
                     </SectionContainer>
                 </div>

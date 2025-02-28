@@ -1,16 +1,14 @@
 import { Card } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import MenuDirection from "./MenuDirection";
 import { treatedTransactionsTemplate } from "./logic";
-import { TransactionsTemplateContext } from "../../../contexts/TransactionsTemplate";
 import DonutChart from "../../charts/DonutChart";
+import { Transaction } from "../../../schemas/Transaction";
 
   
-export default function TransactionsDonutChart() {
+export default function TransactionsDonutChart({transactions} : {transactions: Transaction[]}) {
 
-    const { transactionsTemplate } = useContext(TransactionsTemplateContext)
-
-    const treatedData = treatedTransactionsTemplate(transactionsTemplate)
+    const treatedData = treatedTransactionsTemplate(transactions)
 
     const [isExpense, setIsExpense] = useState<boolean>(true)
 
