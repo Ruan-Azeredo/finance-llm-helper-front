@@ -1,4 +1,4 @@
-export const categories_colors = [
+export const categories_colors2 = [
     '#5D72D6',  
     '#5FD797',
     '#D66459',
@@ -22,4 +22,17 @@ export const colors2 = [
     '#B8A44B',
     '#AB6F33',
     '#4BB875'
+]
+
+export const categories_colors = [
+    '#05C0ED',
+    '#049FD7',
+    '#0581E8',
+    '#0445C4',
+    '#0AC9C0',
+    '#078F88',
+    '#0714A5',
+    '#020E73',
+    '#456C75',
+    '#8EB0BE'
 ]
