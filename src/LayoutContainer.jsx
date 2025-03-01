@@ -13,7 +13,7 @@ import AddTransactions from './pages/AddTransactions'
 import RequestAnswer from './components/RequestAnswer'
 import { RequisitionsManagerContext } from './contexts/RequisitionsManager'
 import { useContext } from 'react'
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
 import { AuthContext } from './contexts/Auth'
 
 const user = {
@@ -29,6 +29,30 @@ export default function LayoutContainer() {
   const { respData } = useContext(RequisitionsManagerContext)
   const { signOut } = useContext(AuthContext)
   
+  const navigation = [
+    { name: 'Adicionar Transação', href: '/', current: true },
+    { name: 'Dashboard', href: '/dashboard', current: false },
+/*     { name: 'Resources', href: '#', current: false },
+    { name: 'Company Directory', href: '#', current: false },
+    { name: 'Openings', href: '#', current: false }, */
+  ]
+
+  const month = [
+    { name: 'Janeiro', href: '#', current: false },
+    { name: 'Fevereiro', href: '#', current: false },
+    { name: 'Março', href: '#', current: false },
+    { name: '+', href: '#', current: false },
+    /* { name: 'Abril', href: '#', current: false },
+    { name: 'Maio', href: '#', current: false },
+    { name: 'Junho', href: '#', current: false },
+    { name: 'Julho', href: '#', current: false },
+    { name: 'Agosto', href: '#', current: false },
+    { name: 'Setembro', href: '#', current: false },
+    { name: 'Outubro', href: '#', current: false },
+    { name: 'Novembro', href: '#', current: false },
+    { name: 'Dezembro', href: '#', current: false }, */
+  ]
+
   const userNavigation = [
     { name: 'Perfil', href: '#' },
     { name: 'Configurações', href: '#' },
@@ -46,13 +70,13 @@ export default function LayoutContainer() {
         ```
       */}
       <div className="flex flex-col min-h-screen bg-slate-100">
-        <Popover as="header" className="pb-24 mx-6 rounded-b-xl bg-gradient-to-br from-slate-900 to-slate-700">
+        <Popover as="header" className="pb-24 mx-2 md:mx-3 xl:mx-6 rounded-b-xl bg-gradient-to-br from-slate-900 to-slate-700">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="relative flex items-center justify-center py-5 lg:justify-between">
               {/* Logo */}
               <div className="absolute left-0 flex-shrink-0 lg:static">
                 <a href="#">
-                  <span className="sr-only">Your Company</span>
+                  <span className="sr-only">Spendlyzer</span>
                   <img
                     alt="Your Company"
                     src="src/assets/spendlyzer-full-dark-logo.png"
@@ -108,7 +132,42 @@ export default function LayoutContainer() {
                 </PopoverButton>
               </div>
             </div>
-            
+            <div className="hidden border-t border-white border-opacity-20 py-5 lg:block">
+              <div className="grid grid-cols-3 items-center gap-8">
+                <div className="col-span-2">
+                  <nav className="flex space-x-4">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        aria-current={item.current ? 'page' : undefined}
+                        className={
+                          `${useLocation().pathname === item.href ? 'text-white' : 'text-indigo-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
+                        }
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+                <div>
+                  <nav className="flex space-x-4 justify-end">
+                    {month.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        aria-current={item.current ? 'page' : undefined}
+                        className={
+                          `${item.current ? 'text-white' : 'text-indigo-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
+                        }
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="lg:hidden">
@@ -128,7 +187,7 @@ export default function LayoutContainer() {
                     <div>
                       <img
                         alt="Your Company"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        src="src/assets/spendlyzer-full-logo.png"
                         className="h-8 w-auto"
                       />
                     </div>
@@ -141,36 +200,14 @@ export default function LayoutContainer() {
                     </div>
                   </div>
                   <div className="mt-3 space-y-1 px-2">
-                    <a
-                      href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Home
-                    </a>
-                    <a
-                      href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Resources
-                    </a>
-                    <a
-                      href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Company Directory
-                    </a>
-                    <a
-                      href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Openings
-                    </a>
+                    {navigation.map((item) => (
+                      <a
+                        href={item.href}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
                   </div>
                 </div>
                 <div className="pb-2 pt-4">
