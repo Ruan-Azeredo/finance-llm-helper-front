@@ -1,26 +1,62 @@
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Typography,
-  } from "@material-tailwind/react";
-  import Chart from "react-apexcharts";
-  import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
-  import { categories_colors } from "../const/colors";
-   
-  // If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
-  // import dynamic from "next/dynamic";
-  // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-   
-  const chartConfig = {
-    type: "bar",
+import Chart from "react-apexcharts"; // or the appropriate library
+
+type chartConfigProps = {
+  height: number;
+  series: { name: string; data: number[] }[];
+  options: {
+    chart: { toolbar: { show: boolean } };
+    title: { text: string };
+    dataLabels: { enabled: boolean };
+    colors: string[];
+    plotOptions: { bar: { columnWidth: string; borderRadius: number } };
+    xaxis: {
+      axisTicks: { show: boolean };
+      axisBorder: { show: boolean };
+      labels: {
+        style: {
+          colors: string;
+          fontSize: string;
+          fontFamily: string;
+          fontWeight: number;
+        };
+      };
+      categories: string[];
+    };
+    yaxis: {
+      labels: {
+        style: {
+          colors: string;
+          fontSize: string;
+          fontFamily: string;
+          fontWeight: number;
+        };
+      };
+    };
+    grid: {
+      show: boolean;
+      borderColor: string;
+      strokeDashArray: number;
+      xaxis: { lines: { show: boolean } };
+      padding: { top: number; right: number };
+    };
+    fill: { opacity: number };
+    tooltip: { theme: string; marker: { show: boolean } };
+  };
+};
+
+export default function BarChart({
+  series,
+  colors,
+  categories
+} : {
+  series: { name: string; data: number[] }[],
+  colors: string[] | (({ value }: { value: number }) => string),
+  categories: string[]
+}) {
+
+  const chartConfig : chartConfigProps = {
     height: 240,
-    series: [
-      {
-        name: "Sales",
-        data: [250, -240, 660, 1320],
-      },
-    ],
+    series: series,
     options: {
       chart: {
         toolbar: {
@@ -28,20 +64,12 @@ import {
         },
       },
       title: {
-        show: "",
+        text: "",
       },
       dataLabels: {
         enabled: false,
       },
-      colors: [
-        function ({ value } : { value: number }) {
-            if (value > 0) {
-              return categories_colors[3];
-            } else {
-              return "#D9534F";
-            }
-          }
-      ],
+      colors: ['#000'],
       plotOptions: {
         bar: {
           columnWidth: "40%",
@@ -63,12 +91,7 @@ import {
             fontWeight: 400,
           },
         },
-        categories: [
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-        ],
+        categories: categories,
       },
       yaxis: {
         labels: {
@@ -105,13 +128,7 @@ import {
       },
     },
   };
-   
-  export default function BarChart() {
-    return (
-      <Card>
-        <CardBody className="px-2 pb-0">
-          <Chart {...chartConfig} />
-        </CardBody>
-      </Card>
-    );
-  }
+  return (
+    <Chart type="bar" {...chartConfig} />
+  );
+}
