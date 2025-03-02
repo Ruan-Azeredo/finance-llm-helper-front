@@ -7,12 +7,14 @@ interface RequisitionsManagerContextType {
     instance: AxiosInstance | null
     respData: AxiosResponse | AxiosError | null
     saveTransactions: (transactions: Transaction[]) => void
+    getAllTransactions: () => void
 }
 
 export const RequisitionsManagerContext = createContext<RequisitionsManagerContextType>({
     instance: null,
     respData: null,
-    saveTransactions: () => {}
+    saveTransactions: () => {},
+    getAllTransactions: () => {}
 });
 
 export function RequisitionsManagerProvider({ children } : { children: React.ReactNode }) {
@@ -23,7 +25,11 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
 
     const saveTransactions = async (transactions: Transaction[]) => {
         try {
-            const response = await instance.post('/transaction/create-many-transactions/1', transactions)
+            const response = await instance.post('/transaction/create-many-transactions/1', transactions,
+                {
+                headers: { "Content-Type": "application/json" } // ✅ Explicitly set headers
+                }
+            )
             console.log(response)
             setRespData(response)
 
@@ -36,11 +42,21 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
         }
     }
 
+    const getAllTransactions = async () => {
+        try {
+            const response = await instance.get('/transaction/from-user/1')
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <RequisitionsManagerContext.Provider value={{
             instance,
             respData,
-            saveTransactions
+            saveTransactions,
+            getAllTransactions
         }}>
             {children}
         </RequisitionsManagerContext.Provider>
