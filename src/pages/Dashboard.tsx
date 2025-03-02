@@ -1,7 +1,7 @@
 import { fake_transactions } from "../components/const/fake_transactions"
 import Categories from "../components/Categories"
-import BarChart from "../components/charts/BarChart"
-import TwoLinesChart from "../components/charts/TwoLinesChart"
+import LatestMonthsBalance from "../components/modules/latestMonthsBalance"
+import IncomeExpenseChart from "../components/modules/incomeExpenseChart"
 import { default_categories } from "../components/const/default_categories"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 import SectionContainer from "../components/SectionContainer"
@@ -58,7 +58,7 @@ const Dashboard = () => {
                 <div className="w-full flex gap-3 justify-between my-3">
                     <SectionContainer title="Transactions" className="w-full">
                         <div className="h-96 w-full p-6">
-                            <TwoLinesChart/>
+                            <IncomeExpenseChart transactions={fake_transactions}/>
                         </div>
                     </SectionContainer>
                     <SectionContainer title="Goals" className="min-w-80">
@@ -82,7 +82,12 @@ const Dashboard = () => {
                     </SectionContainer>
                     <SectionContainer title="Charts" className="max-w-[340px] ml-3">
                         <div className="p-6 w-[340px]">
-                            <BarChart/>
+                            <LatestMonthsBalance monthsBalance={[250, -240, 660, 1320]} months={[
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+        ]}/>
                         </div>
                     </SectionContainer>
                 </div>
