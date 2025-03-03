@@ -14,12 +14,6 @@ export const treatedlastMonthsData = (monthsBalance: number[], months: string[])
             },
         ],
         categories: months,
-        colors: function ({ value } : { value: number }) : string {
-            if (value > 0) {
-                return categories_colors[3];
-            } else {
-                return "#D9534F";
-            }
-        }
+        colors: monthsBalance.map((value) => (value > 0 ? "#2196f3" : "#ff5252")), // Definindo as cores
     }
 }
