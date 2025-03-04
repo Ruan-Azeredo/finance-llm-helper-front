@@ -7,8 +7,9 @@ type chartConfigProps = {
     chart: { toolbar: { show: boolean } };
     title: { text: string };
     dataLabels: { enabled: boolean };
+    legend: { show: boolean };
     colors: string[];
-    plotOptions: { bar: { columnWidth: string; borderRadius: number } };
+    plotOptions: { bar: { columnWidth: string; borderRadius: number, distributed: boolean } };
     xaxis: {
       axisTicks: { show: boolean };
       axisBorder: { show: boolean };
@@ -47,11 +48,13 @@ type chartConfigProps = {
 export default function BarChart({
   series,
   colors,
-  categories
+  categories,
+  formatter
 } : {
   series: { name: string; data: number[] }[],
-  colors: string[] | (({ value }: { value: number }) => string),
-  categories: string[]
+  colors: string[],
+  categories: string[],
+  formatter: (val: number) => string
 }) {
 
   const chartConfig : chartConfigProps = {
@@ -67,13 +70,26 @@ export default function BarChart({
         text: "",
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function (val) {
+          return "R$" + val;
+        },
+        offsetY: 20,
+        ///topOffset: -20,
+        style: {
+          fontSize: '12px',
+          colors: ["#678493"]
+        }
       },
-      colors: ['#000'],
+      legend: {
+        show: false
+      },
+      colors: colors,
       plotOptions: {
         bar: {
-          columnWidth: "40%",
+          columnWidth: "70%",
           borderRadius: 5 ,
+          distributed: true,
         },
       },
       xaxis: {
@@ -83,7 +99,7 @@ export default function BarChart({
         axisBorder: {
           show: false,
         },
-        labels: {
+        labels: { 
           style: {
             colors: "#616161",
             fontSize: "12px",
@@ -94,6 +110,7 @@ export default function BarChart({
         categories: categories,
       },
       yaxis: {
+        show: false,
         labels: {
           style: {
             colors: "#616161",
@@ -101,6 +118,7 @@ export default function BarChart({
             fontFamily: "inherit",
             fontWeight: 400,
           },
+          formatter: formatter as (val: number, opts?: { [key: string]: unknown }) => string,
         },
       },
       grid: {
