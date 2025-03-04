@@ -17,6 +17,7 @@ export default function latestMonthsBalance({monthsBalance, months} : {monthsBal
                 series={treatedData.series}
                 colors={treatedData.colors}
                 categories={treatedData.categories}
+                formatter={treatedData.formatter}
             />
             
         </Card>

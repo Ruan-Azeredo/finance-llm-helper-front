@@ -6,11 +6,12 @@ type chartConfigProps = {
   options: {
     chart: { toolbar: { show: boolean } };
     title: { text: string };
-    dataLabels: { enabled: boolean };
+    dataLabels: { enabled: boolean, formatter: (val: number) => string, offsetY: number, style: { fontSize: string, colors: string[] }, background: { padding: number } };
     legend: { show: boolean };
     colors: string[];
-    plotOptions: { bar: { columnWidth: string; borderRadius: number, distributed: boolean } };
+    plotOptions: { bar: { columnWidth: string; borderRadius: number, distributed: boolean, dataLabels: { position: string } } };
     xaxis: {
+      show: boolean;
       axisTicks: { show: boolean };
       axisBorder: { show: boolean };
       labels: {
@@ -24,6 +25,7 @@ type chartConfigProps = {
       categories: string[];
     };
     yaxis: {
+      show: boolean;
       labels: {
         style: {
           colors: string;
@@ -71,14 +73,16 @@ export default function BarChart({
       },
       dataLabels: {
         enabled: true,
-        formatter: function (val) {
-          return "R$" + val;
-        },
-        offsetY: 20,
+        formatter: formatter,
+        offsetY: -20,
         ///topOffset: -20,
         style: {
           fontSize: '12px',
-          colors: ["#678493"]
+          colors: colors,
+          ///top: '-20px'
+        },
+        background: {
+          padding: 5,
         }
       },
       legend: {
@@ -90,9 +94,13 @@ export default function BarChart({
           columnWidth: "70%",
           borderRadius: 5 ,
           distributed: true,
+          dataLabels: {
+            position: "top"
+          }
         },
       },
       xaxis: {
+        show: true,
         axisTicks: {
           show: false,
         },
@@ -118,7 +126,6 @@ export default function BarChart({
             fontFamily: "inherit",
             fontWeight: 400,
           },
-          formatter: formatter as (val: number, opts?: { [key: string]: unknown }) => string,
         },
       },
       grid: {
