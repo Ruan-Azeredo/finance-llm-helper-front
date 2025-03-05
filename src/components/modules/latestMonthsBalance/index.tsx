@@ -10,7 +10,7 @@ export default function latestMonthsBalance({monthsBalance, months} : {monthsBal
         <Card className="flex justify-center" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
 
             <div className="flex flex-col mb-2">
-                <div className="block text-sm font-medium leading-6 text-gray-900 ">Saldo dos ultimos Meses</div>
+                <div className="block text-sm font-medium leading-6 text-gray-900 ">Saldo dos ultimos Meses (R$)</div>
             
             </div>
             <BarChart
@@ -18,6 +18,7 @@ export default function latestMonthsBalance({monthsBalance, months} : {monthsBal
                 colors={treatedData.colors}
                 categories={treatedData.categories}
                 formatter={treatedData.formatter}
+                position={treatedData.position}
             />
             
         </Card>

@@ -6,7 +6,7 @@ type chartConfigProps = {
   options: {
     chart: { toolbar: { show: boolean } };
     title: { text: string };
-    dataLabels: { enabled: boolean, formatter: (val: number) => string, offsetY: number, style: { fontSize: string, colors: string[] }, background: { padding: number } };
+    dataLabels: { enabled: boolean, formatter: (val: number) => string, offsetY: number, style: { fontSize: string, colors: string[] } };
     legend: { show: boolean };
     colors: string[];
     plotOptions: { bar: { columnWidth: string; borderRadius: number, distributed: boolean, dataLabels: { position: string } } };
@@ -51,12 +51,14 @@ export default function BarChart({
   series,
   colors,
   categories,
-  formatter
+  formatter,
+  position = "top",
 } : {
   series: { name: string; data: number[] }[],
   colors: string[],
   categories: string[],
   formatter: (val: number) => string
+  position?: "top" | "bottom"
 }) {
 
   const chartConfig : chartConfigProps = {
@@ -75,15 +77,10 @@ export default function BarChart({
         enabled: true,
         formatter: formatter,
         offsetY: -20,
-        ///topOffset: -20,
         style: {
           fontSize: '12px',
           colors: colors,
-          ///top: '-20px'
         },
-        background: {
-          padding: 5,
-        }
       },
       legend: {
         show: false
@@ -95,7 +92,7 @@ export default function BarChart({
           borderRadius: 5 ,
           distributed: true,
           dataLabels: {
-            position: "top"
+            position: position
           }
         },
       },
