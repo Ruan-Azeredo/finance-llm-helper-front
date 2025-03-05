@@ -33,6 +33,7 @@ type chartConfigProps = {
           fontFamily: string;
           fontWeight: number;
         };
+        formatter: (val: number) => string;
       };
     };
     grid: {
@@ -123,6 +124,7 @@ export default function BarChart({
             fontFamily: "inherit",
             fontWeight: 400,
           },
+          formatter: formatter as (val: number, opts?: { [key: string]: unknown }) => string,
         },
       },
       grid: {
@@ -146,7 +148,7 @@ export default function BarChart({
         theme: "dark",
         marker: {
           show: false,
-      },
+        },
       },
     },
   };

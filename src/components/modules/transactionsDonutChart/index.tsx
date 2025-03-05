@@ -24,6 +24,7 @@ export default function TransactionsDonutChart({transactions} : {transactions: T
                 series={isExpense ? treatedData.expenseSeries : treatedData.incomeSeries}
                 colors={isExpense ? treatedData.expenseColors : treatedData.incomeColors}
                 labels={isExpense ? treatedData.expenseLabels : treatedData.incomeLabels}
+                formatter={treatedData.formatter}
             />
             
         </Card>

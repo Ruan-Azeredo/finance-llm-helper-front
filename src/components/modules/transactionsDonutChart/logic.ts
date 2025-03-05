@@ -60,6 +60,8 @@ export const treatedTransactionsTemplate = (transactionsTemplate: Transaction[])
         expenseColors: expense.map((item) => item.colors),
         incomeColors: income.map((item) => item.colors),
         expenseLabels: expense.map((item) => item.category),
-        incomeLabels: income.map((item) => item.category)
+        incomeLabels: income.map((item) => item.category),
+
+        formatter: (val : number) => `R$ ${val.toFixed(2).replace('.', ',')}`
     }
 }
