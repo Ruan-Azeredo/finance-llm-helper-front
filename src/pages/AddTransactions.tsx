@@ -21,7 +21,7 @@ const AddTransactions = () => {
             {/* Left column */}
             <div className="grid grid-cols-1 gap-4 lg:col-span-2">
               <SectionContainer title="Add Transaction buttons">
-                <AddTransactionSection transactions={transactionsTemplate} setTransactions={setTransactionsTemplate} setAnalyzeReqSended={setAnalyzeReqSended}/>
+                <AddTransactionSection setTransactions={setTransactionsTemplate} setAnalyzeReqSended={setAnalyzeReqSended}/>
               </SectionContainer>
 
               {transactionsTemplate.length > 0 ? (

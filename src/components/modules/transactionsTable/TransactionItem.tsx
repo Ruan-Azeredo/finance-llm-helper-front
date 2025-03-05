@@ -1,26 +1,27 @@
+import { useContext, useState } from "react";
+import { Transaction } from "../../../schemas/Transaction";
+import { Modal } from "../../micro/Modal";
+import TransactionForm from "../../form/TransactionForm";
+import SelectCategory from "../../SelectCategory";
 import { ArrowUturnLeftIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { default_categories } from "./const/default_categories"
-import { categories_colors as colors } from "./const/colors"
-import SelectCategory from "./SelectCategory"
-import { useContext, useState } from "react"
-import { Modal }from "./micro/Modal"
-import TransactionForm from "./form/TransactionForm"
-import { TransactionsTemplateContext } from "../contexts/TransactionsTemplate"
-import { Transaction } from "../schemas/Transaction"
+import { categories_colors as colors } from "../../const/colors";
+import { RequisitionsManagerContext } from "../../../contexts/RequisitionsManager";
 
-function TransactionItem(
+export default function TransactionItem(
     {
         transaction,
-        transactions,
-        setTransactions
+        actions
     } : {
         transaction: Transaction,
-        transactions: Transaction[],
-        setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>
+        actions: {
+            delete_transaction: (transaction: Transaction) => void,
+            add_transaction: (transaction: Transaction) => void,
+            update_transaction: (transaction: Transaction) => void
+        }
     }
 ){
 
-    const { delete_transaction } = useContext(TransactionsTemplateContext)
+    const { categories } = useContext(RequisitionsManagerContext)
 
     const [open, setOpen] = useState(false)
 
@@ -32,7 +33,7 @@ function TransactionItem(
     const transaction_memo = removeWhitespace(transaction.memo ?? '').length > 45 ? removeWhitespace(transaction.memo ?? '').slice(0, 45) + '...' : removeWhitespace(transaction.memo ?? '')
     const transaction_amount = transaction.direction === 'expense' ? '- R$' + transaction.amount : '+ R$' + transaction.amount
 
-    const pre_delete_from_template = () => {
+    const pre_delete_from_table = () => {
         const items = document.getElementsByClassName(`${transaction.id}`)
         Array.from(items).forEach(element => {
             element.classList.add('blur-sm');
@@ -51,7 +52,7 @@ function TransactionItem(
         }
     }
 
-    const not_delete_from_template = () => {
+    const not_delete_from_table = () => {
         const items = document.getElementsByClassName(`${transaction.id}`)
         Array.from(items).forEach(element => {
             element.classList.remove('blur-sm');
@@ -70,8 +71,8 @@ function TransactionItem(
         }
     }
 
-    const delete_from_template = () => {
-        delete_transaction(transaction)
+    const delete_from_table = () => {
+        actions.delete_transaction(transaction)
 
         const rmBtn = document.getElementById(transaction.id + 'rm-btn');
         if (rmBtn) {
@@ -93,7 +94,7 @@ function TransactionItem(
             <Modal.Root open={open} setOpen={setOpen}>
                 <Modal.Title title='Altere sua Transação'/>
                 <Modal.Body className="mt-6">
-                    <TransactionForm type="update" transaction={transaction} transactions={transactions} setTransactions={setTransactions} setOpen={setOpen}/>
+                    <TransactionForm type="update" transaction={transaction} setOpen={setOpen} actions={actions}/>
                 </Modal.Body>
             </Modal.Root>
             <tr>
@@ -147,42 +148,20 @@ function TransactionItem(
                     <p onClick={() => setOpen(true)} className="text-nowrap text-right w-full cursor-pointer">{transaction_amount}</p>
                 </td>
                 <td className={`${transaction.id} w-48 py-auto text-right text-sm font-medium sm:pr-0 overflow-visible`}>
-                    <SelectCategory transaction={transaction} categories={default_categories} colors={colors}/>
+                    <SelectCategory transaction={transaction} categories={categories} colors={colors}/>
                 </td>
                 <td>
-                    <button id={transaction.id + 'x-btn'} type="button" onClick={pre_delete_from_template}>
+                    <button id={transaction.id + 'x-btn'} type="button" onClick={pre_delete_from_table}>
                         <XMarkIcon className="text-gray-500 ml-4 h-4 w-4"/>
                     </button>
-                    <button id={transaction.id + 'back-btn'} className="hidden" type="button" onClick={not_delete_from_template}>
+                    <button id={transaction.id + 'back-btn'} className="hidden" type="button" onClick={not_delete_from_table}>
                         <ArrowUturnLeftIcon className="text-gray-500 ml-4 h-4 w-4"/>
                     </button>
                 </td>
             </tr>
             <div className=" w-fit">
-                <button onClick={delete_from_template} id={transaction.id + 'rm-btn'} type="button" className="-mt-[46px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto">Remover</button>
+                <button onClick={delete_from_table} id={transaction.id + 'rm-btn'} type="button" className="-mt-[46px] absolute hidden justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto">Remover</button>
             </div>
         </tbody>
-    )
-}
-
-export default function TransactionsTable() {
-
-    const { transactionsTemplate, setTransactionsTemplate } = useContext(TransactionsTemplateContext)
-
-    return (
-        <div className="z-50">
-            <div className="-mx-4 mt-8 sm:-mx-0">
-                <table className="min-w-full divide-y divide-gray-300">
-                <thead>
-
-                </thead>
-                {transactionsTemplate?.map((transaction) => (
-                    <TransactionItem transaction={transaction} transactions={transactionsTemplate} setTransactions={setTransactionsTemplate}/>
-
-                ))}
-                </table>
-            </div>
-        </div>
-
     )
 }

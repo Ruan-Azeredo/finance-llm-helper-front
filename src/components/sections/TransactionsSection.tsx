@@ -1,5 +1,5 @@
 import { StyledButton } from "../micro/StyledButton"
-import TransactionsTable from "../TransactionsTable"
+import TransactionsTable from "../modules/transactionsTable"
 import { useContext, useEffect, useState } from "react"
 import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate"
 import { calculate_total } from "../logic/transactions_operations"
@@ -27,7 +27,7 @@ export default function TransactionsSection() {
             </StyledButton.Root>
             <StyledButton.Root type='dark' action={() => saveTransactions(transactionsTemplate)}>Salvar</StyledButton.Root>
             </div>
-            <TransactionsTable/>
+            <TransactionsTable transactions={transactionsTemplate} isTemplate={true}/>
         </div>                                                                                                             
     )
 }

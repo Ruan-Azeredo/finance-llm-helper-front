@@ -5,7 +5,7 @@ import IncomeExpenseChart from "../components/modules/incomeExpenseChart"
 import { default_categories } from "../components/const/default_categories"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 import SectionContainer from "../components/SectionContainer"
-import TransactionsTable from "../components/TransactionsTable"
+import TransactionsTable from "../components/modules/transactionsTable"
 
 const Dashboard = () => {
 
@@ -69,7 +69,8 @@ const Dashboard = () => {
                 </div>
                 <SectionContainer title="Transactions">
                     <div className="p-6">
-                        <TransactionsTable/>
+                        <div className="block text-sm font-medium leading-6 text-gray-900 ">Transações</div>
+                        <TransactionsTable transactions={fake_transactions} isTemplate={false}/>
                     </div>
                 </SectionContainer>
             </div>
@@ -86,7 +87,7 @@ const Dashboard = () => {
                                 monthsBalance={[2580,-2400, 1028, 6030]}
                                 months={["Apr", "May", "Jun", "Jul",]}
                                 yearsBalance={[12250, 23310, 10089, 12030]}
-                                years={["2022", "2021", "2020", "2019"]}
+                                years={["2019", "2020", "2021", "2022"]}
                             />
                         </div>
                     </SectionContainer>
