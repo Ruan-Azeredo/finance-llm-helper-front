@@ -26,7 +26,7 @@ export const treatedTransactionsData = (transactions : Transaction[]) : { series
             },
         ],
         categories: transactions.map(item => item.date!),
-        colors: [positiveColor, negativeColor],
+        colors: [negativeColor, positiveColor],
         formatter: function (val : number) {
             return 'R$ ' + val.toFixed(2).toString().replace('.', ',')
         }
