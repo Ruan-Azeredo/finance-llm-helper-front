@@ -16,7 +16,7 @@ export default function IncomeExpenseChart({transactions} : {transactions: Trans
             </div>
             <TwoLinesChart
                 series={treatedData.series}
-                colors={["#e11d48", "#16a34a"]}
+                colors={treatedData.colors}
                 categories={treatedData.categories}
                 formatter={treatedData.formatter}
             />
