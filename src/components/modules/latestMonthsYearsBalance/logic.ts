@@ -1,6 +1,6 @@
-import { categories_colors } from "../../const/colors";
+import { categories_colors, negativeColor } from "../../const/colors";
 
-export const treatedlastMonthsData = (monthsBalance: number[], months: string[]) : { 
+export const treatedlastPeriodData = (timePeriodBalance: number[], timePeriod: string[]) : { 
     series: { name: string; data: number[] }[];
     categories: string[];
     colors: string[];
@@ -12,11 +12,11 @@ export const treatedlastMonthsData = (monthsBalance: number[], months: string[])
         series: [
             {
                 name: "Saldo",
-                data: monthsBalance
+                data: timePeriodBalance
             },
         ],
-        categories: months,
-        colors: monthsBalance.map((value) => (value > 0 ? categories_colors[2] : "#ff5252")), // Definindo as cores
+        categories: timePeriod,
+        colors: timePeriodBalance.map((value) => (value > 0 ? categories_colors[2] : negativeColor)), // Definindo as cores
         formatter: function (val) {
             if(val < 0){
                 if(Math.abs(val) > 1000000000){
@@ -38,6 +38,6 @@ export const treatedlastMonthsData = (monthsBalance: number[], months: string[])
               return "" + val.toFixed(0).toString().replace('.', ',')
             }
         },
-        position: monthsBalance.every(value => value > 0) ? "top" : "bottom"
+        position: timePeriodBalance.every(value => value > 0) ? "top" : "bottom"
     }
 }
