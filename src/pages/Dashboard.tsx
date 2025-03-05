@@ -1,6 +1,6 @@
 import { fake_transactions } from "../components/const/fake_transactions"
 import Categories from "../components/Categories"
-import LatestMonthsBalance from "../components/modules/latestMonthsBalance"
+import LatestMonthsYearsBalance from "../components/modules/latestMonthsYearsBalance"
 import IncomeExpenseChart from "../components/modules/incomeExpenseChart"
 import { default_categories } from "../components/const/default_categories"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
@@ -82,12 +82,12 @@ const Dashboard = () => {
                     </SectionContainer>
                     <SectionContainer title="Charts" className="max-w-[340px] ml-3">
                         <div className="p-6 w-[340px]">
-                            <LatestMonthsBalance monthsBalance={[250, -240, 660, 1320]} months={[
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-        ]}/>
+                            <LatestMonthsYearsBalance 
+                                monthsBalance={[2580,-2400, 1028, 6030]}
+                                months={["Apr", "May", "Jun", "Jul",]}
+                                yearsBalance={[12250, 23310, 10089, 12030]}
+                                years={["2022", "2021", "2020", "2019"]}
+                            />
                         </div>
                     </SectionContainer>
                 </div>
