@@ -89,7 +89,7 @@ export default function LayoutContainer() {
               <div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
                 <button
                   type="button"
-                  className="relative flex-shrink-0 rounded-full p-1 text-indigo-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                  className="relative flex-shrink-0 rounded-full p-1 text-blue-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
@@ -124,7 +124,7 @@ export default function LayoutContainer() {
               {/* Menu button */}
               <div className="absolute right-0 flex-shrink-0 lg:hidden">
                 {/* Mobile menu button */}
-                <PopoverButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-indigo-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                <PopoverButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-blue-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
@@ -142,7 +142,7 @@ export default function LayoutContainer() {
                         href={item.href}
                         aria-current={item.current ? 'page' : undefined}
                         className={
-                          `${useLocation().pathname === item.href ? 'text-white' : 'text-indigo-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
+                          `${useLocation().pathname === item.href ? 'text-white' : 'text-blue-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
                         }
                       >
                         {item.name}
@@ -158,7 +158,7 @@ export default function LayoutContainer() {
                         href={item.href}
                         aria-current={item.current ? 'page' : undefined}
                         className={
-                          `${item.current ? 'text-white' : 'text-indigo-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
+                          `${item.current ? 'text-white' : 'text-blue-100'} rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10`
                         }
                       >
                         {item.name}
@@ -192,7 +192,7 @@ export default function LayoutContainer() {
                       />
                     </div>
                     <div className="-mr-2">
-                      <PopoverButton className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <PopoverButton className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                         <span className="absolute -inset-0.5" />
                         <span className="sr-only">Close menu</span>
                         <XMarkIcon aria-hidden="true" className="h-6 w-6" />
@@ -221,7 +221,7 @@ export default function LayoutContainer() {
                     </div>
                     <button
                       type="button"
-                      className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">View notifications</span>

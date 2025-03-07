@@ -20,11 +20,11 @@ const Root = ({
     } else if(type === 'dark'){
         sty = 'bg-slate-600 text-sm text-white hover:bg-slate-500'
     } else {
-        sty = 'bg-indigo-600 text-white hover:bg-indigo-500'
+        sty = 'bg-blue-600 text-white hover:bg-blue-500'
     }
 
     return (
-        <button type="button" onClick={action} disabled={disabled} className={`items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold ${sty} shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${className}`}>
+        <button type="button" onClick={action} disabled={disabled} className={`items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold ${sty} shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${className}`}>
             {children}
         </button>
     )

@@ -19,7 +19,7 @@ export default function Root({label, children, className, placeholder, validatio
           {label}
         </label>
         <div className={`mt-2`}>
-          <div className={`flex pl-2 rounded-md shadow-sm ring-1 ring-inset ${validationError ? 'ring-red-300 ' : 'ring-gray-300'} focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}>
+          <div className={`flex pl-2 rounded-md shadow-sm ring-1 ring-inset ${validationError ? 'ring-red-300 ' : 'ring-gray-300'} focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600`}>
             {children}
             <input
               id={label}
