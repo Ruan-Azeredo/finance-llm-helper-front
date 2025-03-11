@@ -2,27 +2,28 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LayoutContainer from "./LayoutContainer";
 import AddTransactions from "./pages/AddTransactions";
 import Login from "./pages/Login";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./contexts/Auth";
 import AllTransactions from "./pages/AllTransactions";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
 
 const RouterManager = () => {
 
-    const { isAuthenticated, instance } = useContext(AuthContext)
+    const { isAuthenticated, accessToken } = useContext(AuthContext)
     console.log(isAuthenticated)
 
     const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-        if(isAuthenticated !== undefined && isAuthenticated === true) {
+        if(accessToken) {
             return children
-        } else if(isAuthenticated !== undefined && isAuthenticated === false) return <Navigate to="/login" />
+        } else return <Navigate to="/login" />
     }
 
     const AuthRoute = ({ children }: { children: JSX.Element }) => {
-        if(isAuthenticated !== undefined && isAuthenticated === false) {
+        if(!accessToken) {
             return children
-        } else if(isAuthenticated !== undefined && isAuthenticated === true) return <Navigate to="/" />;
+        } else return <Navigate to="/" />;
     }
 
     const protectedRoutes = [
@@ -30,11 +31,6 @@ const RouterManager = () => {
         { path: "/transactions", element: <AllTransactions/> },
         { path: "/dashboard", element: <Dashboard/> }
     ];
-
-    useEffect(() => {
-        console.log('isAuthenticated ', isAuthenticated)
-        console.log('instance.defaults.headers.common["Authorization"] ', instance.defaults.headers.common["Authorization"])
-    }, [isAuthenticated])
 
     return (
         <BrowserRouter>
@@ -48,6 +44,7 @@ const RouterManager = () => {
 
                 {/* Public Routes */}
                 <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
+                <Route path="/register" element={<AuthRoute><Register /></AuthRoute>} />
 
                 {/* Catch-All Route for 404 */}
                 <Route path="*" element={<NotFound/>} />

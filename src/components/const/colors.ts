@@ -36,3 +36,12 @@ export const categories_colors = [
     '#456C75',
     '#8EB0BE'
 ]
+
+export const positiveColor = '#16a34a'
+export const negativeColor = '#e11d48'
+
+export const positiveColor2 = '#57D588'
+export const negativeColor2 = '#F26A63'
+
+export const positiveColor3 = '#4CB976'
+export const negativeColor3 = '#D55E57'

@@ -46,7 +46,7 @@ export default function SelectCategory({transaction, setCategory, categories, co
     <div>
       <Listbox value={selected} onChange={on_change}>
         <div className="w-44 relative">
-          <ListboxButton className={`relative cursor-default rounded-md py-1.5 pl-3 pr-5 text-left text-gray-900 shadow-sm ring-1 ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6`}>
+          <ListboxButton className={`relative cursor-default rounded-md py-1.5 pl-3 pr-5 text-left text-gray-900 shadow-sm ring-1 ring-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6`}>
             <span className={`block truncate w-32 h-6 `}>{selected}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
               {validationError ? (
@@ -66,10 +66,10 @@ export default function SelectCategory({transaction, setCategory, categories, co
               <ListboxOption
               key={category.name}
               value={category.name}
-              className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+              className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-blue-600 data-[focus]:text-white"
               >
                 <span className="block truncate font-normal group-data-[selected]:font-semibold">{category.name}</span>
-                <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-blue-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
                   <CheckIcon aria-hidden="true" className="h-5 w-5" />
                 </span>
               </ListboxOption>

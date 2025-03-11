@@ -1,20 +1,30 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { createContext, useContext, useState } from "react";
 import { Transaction } from "../schemas/Transaction";
 import { AuthContext } from "./Auth";
+import { default_categories } from "../components/const/default_categories";
+import { Category } from "../schemas/Category";
 
 interface RequisitionsManagerContextType { 
     instance: AxiosInstance | null
     respData: AxiosResponse | AxiosError | null
     saveTransactions: (transactions: Transaction[]) => void
     getAllTransactions: () => void
+    categories: Category[]
+    add_transaction: (transaction: Transaction) => void
+    update_transaction: (transaction: Transaction) => void
+    delete_transaction: (transaction: Transaction) => void
 }
 
 export const RequisitionsManagerContext = createContext<RequisitionsManagerContextType>({
     instance: null,
     respData: null,
     saveTransactions: () => {},
-    getAllTransactions: () => {}
+    getAllTransactions: () => {},
+    categories: [],
+    add_transaction: () => {},
+    update_transaction: () => {},
+    delete_transaction: () => {}
 });
 
 export function RequisitionsManagerProvider({ children } : { children: React.ReactNode }) {
@@ -36,7 +46,6 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
             setTimeout(() => setRespData(null), 5000)
         } catch (error) {
             console.log(error)
-            setRespData(error)
 
             setTimeout(() => setRespData(null), 5000)
         }
@@ -51,12 +60,30 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
         }
     }
 
+    const categories = default_categories
+
+    const add_transaction = (transaction: Transaction) => {
+        console.log('add_transaction', transaction)
+    }
+    
+    const update_transaction = (transaction: Transaction) => {
+        console.log('update_transaction', transaction)
+    }
+
+    const delete_transaction = (transaction: Transaction) => {
+        console.log('delete_transaction', transaction)
+    }
+
     return (
         <RequisitionsManagerContext.Provider value={{
             instance,
             respData,
             saveTransactions,
-            getAllTransactions
+            getAllTransactions,
+            categories,
+            add_transaction,
+            update_transaction,
+            delete_transaction
         }}>
             {children}
         </RequisitionsManagerContext.Provider>

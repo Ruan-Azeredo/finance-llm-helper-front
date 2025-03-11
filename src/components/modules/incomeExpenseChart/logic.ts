@@ -1,4 +1,5 @@
 import { Transaction } from "../../../schemas/Transaction"
+import { negativeColor, positiveColor } from "../../const/colors"
 
 const calculate_amount_sequence = (transactions : Transaction[], direction : "expense" | "income") => {
     let total = 0
@@ -8,11 +9,10 @@ const calculate_amount_sequence = (transactions : Transaction[], direction : "ex
         }
         return total
     })
-    console.log(sum)
     return sum.map((item) => parseFloat(item?.toFixed(2)))
 }
 
-export const treatedTransactionsData = (transactions : Transaction[]) : { series: { name: string; data: number[] }[]; categories: string[]; formatter: (val: number) => string; } => {
+export const treatedTransactionsData = (transactions : Transaction[]) : { series: { name: string; data: number[] }[]; categories: string[]; colors: string[]; formatter: (val: number) => string; } => {
 
     return {
         series: [
@@ -26,6 +26,7 @@ export const treatedTransactionsData = (transactions : Transaction[]) : { series
             },
         ],
         categories: transactions.map(item => item.date!),
+        colors: [negativeColor, positiveColor],
         formatter: function (val : number) {
             return 'R$ ' + val.toFixed(2).toString().replace('.', ',')
         }

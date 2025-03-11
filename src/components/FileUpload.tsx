@@ -88,7 +88,7 @@ export default function FileUpload({setTransactions, setAnalyzeReqSended}: FileU
             </div>
           </label>
         </div>
-          <button disabled={!selectedFile} type="submit" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed">Categorizar Transações</button>
+          <button disabled={!selectedFile} type="submit" className="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed">Categorizar Transações</button>
         </form>
     )
 }

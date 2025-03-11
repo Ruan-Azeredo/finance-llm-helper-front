@@ -6,10 +6,12 @@ type chartConfigProps = {
   options: {
     chart: { toolbar: { show: boolean } };
     title: { text: string };
-    dataLabels: { enabled: boolean };
+    dataLabels: { enabled: boolean, formatter: (val: number) => string, offsetY: number, style: { fontSize: string, colors: string[] } };
+    legend: { show: boolean };
     colors: string[];
-    plotOptions: { bar: { columnWidth: string; borderRadius: number } };
+    plotOptions: { bar: { columnWidth: string; borderRadius: number, distributed: boolean, dataLabels: { position: string } } };
     xaxis: {
+      show: boolean;
       axisTicks: { show: boolean };
       axisBorder: { show: boolean };
       labels: {
@@ -23,6 +25,7 @@ type chartConfigProps = {
       categories: string[];
     };
     yaxis: {
+      show: boolean;
       labels: {
         style: {
           colors: string;
@@ -30,6 +33,7 @@ type chartConfigProps = {
           fontFamily: string;
           fontWeight: number;
         };
+        formatter: (val: number) => string;
       };
     };
     grid: {
@@ -47,11 +51,15 @@ type chartConfigProps = {
 export default function BarChart({
   series,
   colors,
-  categories
+  categories,
+  formatter,
+  position = "top",
 } : {
   series: { name: string; data: number[] }[],
-  colors: string[] | (({ value }: { value: number }) => string),
-  categories: string[]
+  colors: string[],
+  categories: string[],
+  formatter: (val: number) => string
+  position?: "top" | "bottom"
 }) {
 
   const chartConfig : chartConfigProps = {
@@ -67,23 +75,37 @@ export default function BarChart({
         text: "",
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: formatter,
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: colors,
+        },
       },
-      colors: ['#000'],
+      legend: {
+        show: false
+      },
+      colors: colors,
       plotOptions: {
         bar: {
-          columnWidth: "40%",
+          columnWidth: "70%",
           borderRadius: 5 ,
+          distributed: true,
+          dataLabels: {
+            position: position
+          }
         },
       },
       xaxis: {
+        show: true,
         axisTicks: {
           show: false,
         },
         axisBorder: {
           show: false,
         },
-        labels: {
+        labels: { 
           style: {
             colors: "#616161",
             fontSize: "12px",
@@ -94,6 +116,7 @@ export default function BarChart({
         categories: categories,
       },
       yaxis: {
+        show: false,
         labels: {
           style: {
             colors: "#616161",
@@ -101,6 +124,7 @@ export default function BarChart({
             fontFamily: "inherit",
             fontWeight: 400,
           },
+          formatter: formatter as (val: number, opts?: { [key: string]: unknown }) => string,
         },
       },
       grid: {
@@ -124,7 +148,7 @@ export default function BarChart({
         theme: "dark",
         marker: {
           show: false,
-      },
+        },
       },
     },
   };

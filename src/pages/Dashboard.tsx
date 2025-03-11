@@ -1,11 +1,11 @@
 import { fake_transactions } from "../components/const/fake_transactions"
 import Categories from "../components/Categories"
-import LatestMonthsBalance from "../components/modules/latestMonthsBalance"
+import LatestMonthsYearsBalance from "../components/modules/latestMonthsYearsBalance"
 import IncomeExpenseChart from "../components/modules/incomeExpenseChart"
 import { default_categories } from "../components/const/default_categories"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 import SectionContainer from "../components/SectionContainer"
-import TransactionsTable from "../components/TransactionsTable"
+import TransactionsTable from "../components/modules/transactionsTable"
 
 const Dashboard = () => {
 
@@ -69,7 +69,8 @@ const Dashboard = () => {
                 </div>
                 <SectionContainer title="Transactions">
                     <div className="p-6">
-                        <TransactionsTable/>
+                        <div className="block text-sm font-medium leading-6 text-gray-900 ">Transações</div>
+                        <TransactionsTable transactions={fake_transactions} isTemplate={false}/>
                     </div>
                 </SectionContainer>
             </div>
@@ -82,12 +83,12 @@ const Dashboard = () => {
                     </SectionContainer>
                     <SectionContainer title="Charts" className="max-w-[340px] ml-3">
                         <div className="p-6 w-[340px]">
-                            <LatestMonthsBalance monthsBalance={[250, -240, 660, 1320]} months={[
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-        ]}/>
+                            <LatestMonthsYearsBalance 
+                                monthsBalance={[2580,-2400, 1028, 6030]}
+                                months={["Apr", "May", "Jun", "Jul",]}
+                                yearsBalance={[12250, 23310, 10089, 12030]}
+                                years={["2019", "2020", "2021", "2022"]}
+                            />
                         </div>
                     </SectionContainer>
                 </div>

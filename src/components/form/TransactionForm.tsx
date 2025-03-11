@@ -1,26 +1,25 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Transaction } from "../../schemas/Transaction"
 import Form from "./Form"
-import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate"
 
 const TransactionForm = ({
     type = "add",
     transaction,
-    setOpen
+    setOpen,
+    actions
 } : {
     type?: "add" | "update",
     transaction?: Transaction
-    transactions: Transaction[],
-    setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>,
     setOpen?: React.Dispatch<React.SetStateAction<boolean>>
+    actions: {
+        add_transaction: (transaction: Transaction) => void,
+        update_transaction: (transaction: Transaction) => void
+    }
 }) => {
-
-    const {add_transaction, update_transaction} = useContext(TransactionsTemplateContext)
-
 
     const addTransaction = (new_transaction: Transaction): void => {
         
-        add_transaction(new_transaction)
+        actions.add_transaction(new_transaction)
         if(setOpen){
             setOpen(false)
         }
@@ -32,7 +31,7 @@ const TransactionForm = ({
             setIncomeOrExpense(null)
         }
         
-        update_transaction(new_transaction)
+        actions.update_transaction(new_transaction)
         if(setOpen){
             setOpen(false)
         }
