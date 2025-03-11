@@ -49,3 +49,9 @@ export default tseslint.config({
 })
 ```
 # finance-llm-helper-front
+
+In case of error in npm run dev:
+ 
+```bash
+npm run dev -- --host 127.0.0.1
+```
