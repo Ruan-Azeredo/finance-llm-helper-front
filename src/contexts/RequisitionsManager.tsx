@@ -1,4 +1,4 @@
-import { AxiosResponse, AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { createContext, useState } from "react";
 import { Transaction } from "../schemas/Transaction";
 import { default_categories } from "../components/const/default_categories";
@@ -7,38 +7,51 @@ import { errorToast, successToast } from "../components/toasts";
 
 import useAxiosAuth from "../hooks/useAxiosAuth";
 
-interface RequisitionsManagerContextType { 
-    respData: AxiosResponse | AxiosError | null
+interface RequisitionsManagerContextType {
     saveTransactions: (transactions: Transaction[]) => void
     getAllTransactions: () => void
     categories: Category[]
     add_transaction: (transaction: Transaction) => void
     update_transaction: (transaction: Transaction) => void
     delete_transaction: (transaction: Transaction) => void
+    getTransactionsByCategorizedFile: (formData: FormData) => void
+    currentDashboardTransactions: Transaction[]
+    getTransactionsByTimeRange: (startTimestemps: number, endTimestemps: number) => Promise<void>
 }
 
 export const RequisitionsManagerContext = createContext<RequisitionsManagerContextType>({
-    respData: null,
     saveTransactions: () => {},
     getAllTransactions: () => {},
     categories: [],
     add_transaction: () => {},
     update_transaction: () => {},
-    delete_transaction: () => {}
+    delete_transaction: () => {},
+    getTransactionsByCategorizedFile: () => {},
+    currentDashboardTransactions: [],
+    getTransactionsByTimeRange: async () => {},
 });
 
 export function RequisitionsManagerProvider({ children } : { children: React.ReactNode }) {
 
     const api = useAxiosAuth()
 
-    const [respData, setRespData] = useState<AxiosResponse | AxiosError | null>(null)
-
     const [currentDashboardTransactions, setCurrentDashboardTransactions] = useState<Transaction[]>([])
-    const [dataCache, setDataCache] = useState<{
+    /* const [dataCache, setDataCache] = useState<{
         monthsData: {monthName: string, transactions: Transaction[]}[]
         yearsData: {year: number, transactions: Transaction[]}[]
-    }>([])
+    }>([]) */
 
+    const getTransactionsByTimeRange = async (startTimestemps: number, endTimestemps: number) => {
+        try {
+            const response = await api.get(`/transaction/from-user/1?start_date=${startTimestemps}&end_date=${endTimestemps}`)
+            console.log(response)
+            setCurrentDashboardTransactions(response.data.transactions)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------
 
     const saveTransactions = async (transactions: Transaction[]) => {
         try {
@@ -49,7 +62,7 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
             )
             successToast(response)
         } catch (error) {
-            errorToast(error)
+            errorToast(error as AxiosError)
         }
     }
 
@@ -75,14 +88,6 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
         }
     }
 
-    const getTransactionsByTimeRange = async (startTimestemps: number, endTimestemps: number) => {
-        try {
-            const response = await api.get(`/transaction/from-user/1?start_date=${startTimestemps}&end_date=${endTimestemps}`)
-            console.log(response)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const categories = default_categories
 
@@ -100,13 +105,15 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
 
     return (
         <RequisitionsManagerContext.Provider value={{
-            respData,
             saveTransactions,
             getAllTransactions,
             categories,
             add_transaction,
             update_transaction,
-            delete_transaction
+            delete_transaction,
+            getTransactionsByCategorizedFile,
+            getTransactionsByTimeRange,
+            currentDashboardTransactions,
         }}>
             {children}
         </RequisitionsManagerContext.Provider>

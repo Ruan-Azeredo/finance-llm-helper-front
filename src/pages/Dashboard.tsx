@@ -6,8 +6,17 @@ import { default_categories } from "../components/const/default_categories"
 import TransactionsDonutChart from "../components/modules/transactionsDonutChart"
 import SectionContainer from "../components/SectionContainer"
 import TransactionsTable from "../components/modules/transactionsTable"
+import { useContext, useEffect } from "react"
+import { RequisitionsManagerContext } from "../contexts/RequisitionsManager"
+import { dateToTimestamp } from "../components/logic/timestamps_conversions"
 
 const Dashboard = () => {
+
+    const { getTransactionsByTimeRange, currentDashboardTransactions } = useContext(RequisitionsManagerContext)
+
+    useEffect(() => {
+        getTransactionsByTimeRange(dateToTimestamp('25/05/2024'), dateToTimestamp('30/06/2024'))
+    }, [])
 
     const stats = [
         {
@@ -66,19 +75,19 @@ const Dashboard = () => {
                 <div className="w-full flex gap-3 justify-between my-3">
                     <SectionContainer title="Transactions" className="w-full">
                         <div className="h-96 w-full p-6">
-                            <IncomeExpenseChart transactions={fake_transactions}/>
+                            <IncomeExpenseChart transactions={currentDashboardTransactions}/>
                         </div>
                     </SectionContainer>
                     <SectionContainer title="Goals" className="min-w-80">
                         <div className="p-6">
-                            <TransactionsDonutChart transactions={fake_transactions}/>
+                            <TransactionsDonutChart transactions={currentDashboardTransactions}/>
                         </div>
                     </SectionContainer>
                 </div>
                 <SectionContainer title="Transactions">
                     <div className="p-6">
                         <div className="block text-sm font-medium leading-6 text-gray-900 ">Transações</div>
-                        <TransactionsTable transactions={fake_transactions} isTemplate={false}/>
+                        <TransactionsTable transactions={currentDashboardTransactions} isTemplate={false}/>
                     </div>
                 </SectionContainer>
             </div>
@@ -99,6 +108,7 @@ const Dashboard = () => {
                             />
                         </div>
                     </SectionContainer>
+                    <button onClick={() => console.log(currentDashboardTransactions)}>console transactions</button>
                 </div>
             </div>
         </div>
