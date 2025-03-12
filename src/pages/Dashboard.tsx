@@ -41,16 +41,24 @@ const Dashboard = () => {
                                 className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-4 py-6 sm:px-4 xl:px-6"
                                 >
                                 <dt className="text-sm font-medium leading-6 text-gray-500">{stat.name}</dt>
-                                <dd
-                                    className={`${
-                                    stat.changeType === 'negative' ? 'text-rose-600' : 'text-green-600'
-                                    } text-xs font-medium`}
-                                >
-                                    {stat.change}
-                                </dd>
-                                <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                                    {stat.value}
-                                </dd>
+                                {stat ? (
+                                    <dd
+                                        className={`${
+                                        stat.changeType === 'negative' ? 'text-rose-600' : 'text-green-600'
+                                        } text-xs font-medium`}
+                                    >
+                                        {stat.change}
+                                    </dd> 
+                                ) : (
+                                    <div className="w-10 h-4 bg-gray-200 animate-pulse rounded"></div>
+                                )}
+                                {stat ? (
+                                    <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+                                        {stat.value}
+                                    </dd>
+                                ) : (
+                                    <div className="w-full h-8 mt-2 bg-gray-200 animate-pulse rounded"></div>
+                                )}
                             </div>
                         </SectionContainer>
                     ))}
