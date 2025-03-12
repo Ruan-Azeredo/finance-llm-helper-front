@@ -28,13 +28,11 @@ const AddTransactions = () => {
                 <SectionContainer title="Transações">
                   <TransactionsSection/>
                 </SectionContainer>
-              ) : (
-                <>
-                  {analyzeReqSended &&
-                    <AwaitModal/>
-                  }
-                </>
-              )}
+              ) :null}
+              
+              {analyzeReqSended &&
+                <AwaitModal/>
+              }
             </div>
 
             {/* Right column */}
