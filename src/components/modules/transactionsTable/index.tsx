@@ -16,7 +16,7 @@ export default function TransactionsTable({transactions, isTemplate}: {transacti
     }
 
     return (
-        <div className="z-50">
+        <div>
             <div className="-mx-4 mt-8 sm:-mx-0">
                 <table className="min-w-full divide-y divide-gray-300">
                 <thead>
