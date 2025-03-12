@@ -4,15 +4,13 @@ import AddTransactions from "./pages/AddTransactions";
 import Login from "./pages/Login";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/Auth";
-import AllTransactions from "./pages/AllTransactions";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 
 const RouterManager = () => {
 
-    const { isAuthenticated, accessToken } = useContext(AuthContext)
-    console.log(isAuthenticated)
+    const { accessToken } = useContext(AuthContext)
 
     const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
         if(accessToken) {
@@ -28,7 +26,6 @@ const RouterManager = () => {
 
     const protectedRoutes = [
         { path: "/", element: <AddTransactions/> },
-        { path: "/transactions", element: <AllTransactions/> },
         { path: "/dashboard", element: <Dashboard/> }
     ];
 
