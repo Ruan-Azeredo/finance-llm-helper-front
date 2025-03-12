@@ -1,63 +1,85 @@
 import axios, { AxiosInstance } from "axios";
 import { createContext, useEffect, useState } from "react";
+const VITE_APP = import.meta.env.VITE_APP
 
 interface AuthContextType {
-    instance: AxiosInstance
-    signIn: (email: string, password: string) => void
+    instance?: AxiosInstance
+    signIn?: (email: string, password: string) => void
     signOut: () => void
-    isAuthenticated: boolean | undefined
+    loginError?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    refreshAccessToken: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType>({
-    instance: axios,
-    signIn: () => {},
-    signOut: () => {},
-    isAuthenticated: undefined
+    refreshAccessToken: async () => {},
+    signOut: function (): void {
+        throw new Error("Function not implemented.");
+    }
 })
-
 export function AuthProvider({ children }: {children: React.ReactNode}) {
 
-    const [isAuthenticated, setIsAuthenticated] = useState()
+    const [loginError, setLoginError] = useState<string | null>()
+
+    const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('access_token') || null)
+    const [refreshToken, setRefreshToken] = useState<string | null>(localStorage.getItem('refresh_token') || null)
+    const [currentUser, setCurrentUser] = useState<unknown | null>(null)
 
     const instance = axios.create({
-        baseURL: 'http://127.0.0.1:8000',
+        baseURL: VITE_APP === 'PROD' ? 'https://inance-llm-helper-financehelperllm6507-kjc5emu8.leapcell.dev' : 'http://127.0.0.1:8000',
         headers: {
             'Access-Control-Allow-Origin': '*',
         }
     })
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            console.log('token found: ', localStorage.getItem('token'))
-            setIsAuthenticated(true)
-            instance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-            instance.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
-            console.log('instance.defaults.headers.common["Authorization"] ', instance.defaults.headers.common['Authorization'])
-            console.log('instance.defaults.headers.co', instance.defaults.headers.post['Access-Control-Allow-Origin'])
-        } else {
-            setIsAuthenticated(false)
+        if (accessToken) {
+            axios.get('http://127.0.0.1:8000/user/me', { headers: { Authorization: `Bearer ${accessToken}` } })
+                .then(resp => setCurrentUser(resp.data))
+                .catch(() => refreshAccessToken())
         }
-    }, [instance])
+    }, [accessToken])
 
     async function signIn(email: string, password: string) {
         try {
-            const auth = await instance.post('/auth/login', {email, password})
+            const response = await axios.post('http://127.0.0.1:8000/auth/login', { email, password })
 
-            if(auth.status === 200) {
-                localStorage.setItem('token', auth.data.access_token.token)
-                instance.defaults.headers.common['Authorization'] = `Bearer ${auth.data.access_token.token}`
-                setIsAuthenticated(true)
-            }
+            setAccessToken(response.data.access_token.token)
+            setRefreshToken(response.data.refresh_token.token)
+
+            localStorage.setItem('access_token', response.data.access_token.token)
+            localStorage.setItem('refresh_token', response.data.refresh_token.token)
+
+            setLoginError(null)
         } catch (error) {
-            console.log(error)
+            console.log('Falha no login ', error)
+            setLoginError('Email ou senha inválidos')
         }
 
     }
 
+    async function refreshAccessToken(){
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/auth/get-access-token', { 
+                headers: { Authorization: `Bearer ${refreshToken}` } 
+            })
+
+            setAccessToken(response.data.access_token.token)
+            localStorage.setItem('access_token', response.data.access_token.token)
+        } catch (error) {
+            console.log(error)
+            signOut()
+        }
+    }
+
     async function signOut() {
-        localStorage.removeItem('token')
-        instance.defaults.headers.common['Authorization'] = ''
-        setIsAuthenticated(false)
+        setAccessToken(null)
+        setRefreshToken(null)
+        setCurrentUser(null)
+        
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
     }
 
     return (
@@ -65,7 +87,10 @@ export function AuthProvider({ children }: {children: React.ReactNode}) {
             instance,
             signIn,
             signOut,
-            isAuthenticated
+            loginError,
+            accessToken,
+            refreshToken,
+            refreshAccessToken
         }}>
             {children}
         </AuthContext.Provider>
