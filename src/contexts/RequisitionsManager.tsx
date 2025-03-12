@@ -41,6 +41,44 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
         yearsData: {year: number, transactions: Transaction[]}[]
     }>([]) */
 
+
+    /*
+
+    Last months cache
+
+    in cache = {
+        lastMonthsComparative: {timestamps: number, income: number, expense: number}[]
+    }
+
+    is like: 
+        {
+            "lastMonthsComparative": [
+                {
+                    "timestamps": 23446133, # 01/01/2023
+                    "income": 123.45,
+                    "expense": 14234.12,
+                },
+                {
+                    "timestamps": 92223812, # 01/02/2023
+                    "income": 2234.12,
+                    "expense": 2344.12,
+                },
+                {{
+                    "timestamps": 53443812, # 01/03/2023
+                    "income": 64345.12,
+                    "expense": 34534.12,
+                },
+                {
+                    "timestamps": 64434512, # 01/03/2023
+                    "income": 43224,
+                    "expense": 4234.12,
+                }
+            ]
+        }
+
+
+    */
+
     const getTransactionsByTimeRange = async (startTimestemps: number, endTimestemps: number) => {
         try {
             const response = await api.get(`/transaction/from-user/1?start_date=${startTimestemps}&end_date=${endTimestemps}`)
