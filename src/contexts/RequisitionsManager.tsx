@@ -1,12 +1,13 @@
-import { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { createContext, useContext, useState } from "react";
+import { AxiosResponse, AxiosError } from "axios";
+import { createContext, useState } from "react";
 import { Transaction } from "../schemas/Transaction";
-import { AuthContext } from "./Auth";
 import { default_categories } from "../components/const/default_categories";
 import { Category } from "../schemas/Category";
+import { errorToast, successToast } from "../components/toasts";
+
+import useAxiosAuth from "../hooks/useAxiosAuth";
 
 interface RequisitionsManagerContextType { 
-    instance: AxiosInstance | null
     respData: AxiosResponse | AxiosError | null
     saveTransactions: (transactions: Transaction[]) => void
     getAllTransactions: () => void
@@ -17,7 +18,6 @@ interface RequisitionsManagerContextType {
 }
 
 export const RequisitionsManagerContext = createContext<RequisitionsManagerContextType>({
-    instance: null,
     respData: null,
     saveTransactions: () => {},
     getAllTransactions: () => {},
@@ -29,31 +29,55 @@ export const RequisitionsManagerContext = createContext<RequisitionsManagerConte
 
 export function RequisitionsManagerProvider({ children } : { children: React.ReactNode }) {
 
-    const { instance } = useContext(AuthContext)
+    const api = useAxiosAuth()
 
     const [respData, setRespData] = useState<AxiosResponse | AxiosError | null>(null)
 
+    const [currentDashboardTransactions, setCurrentDashboardTransactions] = useState<Transaction[]>([])
+    const [dataCache, setDataCache] = useState<{
+        monthsData: {monthName: string, transactions: Transaction[]}[]
+        yearsData: {year: number, transactions: Transaction[]}[]
+    }>([])
+
+
     const saveTransactions = async (transactions: Transaction[]) => {
         try {
-            const response = await instance.post('/transaction/create-many-transactions/1', transactions,
+            const response = await api.post('/transaction/create-many-transactions/1', transactions,
                 {
                 headers: { "Content-Type": "application/json" } // ✅ Explicitly set headers
                 }
             )
-            console.log(response)
-            setRespData(response)
-
-            setTimeout(() => setRespData(null), 5000)
+            successToast(response)
         } catch (error) {
-            console.log(error)
-
-            setTimeout(() => setRespData(null), 5000)
+            errorToast(error)
         }
     }
 
     const getAllTransactions = async () => {
         try {
-            const response = await instance.get('/transaction/from-user/1')
+            const response = await api.get('/transaction/from-user/1')
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getTransactionsByCategorizedFile = async (formData: FormData) => {
+        try {
+            const response = await api.post('/categorize-transaction/by-file', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                }
+            })
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getTransactionsByTimeRange = async (startTimestemps: number, endTimestemps: number) => {
+        try {
+            const response = await api.get(`/transaction/from-user/1?start_date=${startTimestemps}&end_date=${endTimestemps}`)
             console.log(response)
         } catch (error) {
             console.log(error)
@@ -76,7 +100,6 @@ export function RequisitionsManagerProvider({ children } : { children: React.Rea
 
     return (
         <RequisitionsManagerContext.Provider value={{
-            instance,
             respData,
             saveTransactions,
             getAllTransactions,
