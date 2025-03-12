@@ -44,6 +44,7 @@ export default function FileUpload({setTransactions, setAnalyzeReqSended}: FileU
         }).then((response) => {
           console.log('resp: ',response);
           setTransactions(response.data.transactions)
+          setAnalyzeReqSended(false)
         })
       } else {
         await axios.post("http://127.0.0.1:8000/categorize-transaction/by-file", formData, {
@@ -53,6 +54,7 @@ export default function FileUpload({setTransactions, setAnalyzeReqSended}: FileU
         }).then((response) => {
           console.log('resp: ',response);
           setTransactions(response.data.transactions)
+          setAnalyzeReqSended(false)
         })
       }
 
