@@ -19,13 +19,31 @@ export default function LatestMonthsYearsBalance({monthsBalance, months, yearsBa
                 <MenuDirection isMonth={isMonth} setIsMonth={setIsMonth}/>
             
             </div>
-            <BarChart
-                series={isMonth ? treatedMonthsData.series : treatedYearsData.series}
-                colors={isMonth ? treatedMonthsData.colors : treatedYearsData.colors}
-                categories={isMonth ? treatedMonthsData.categories : treatedYearsData.categories}
-                formatter={isMonth ? treatedMonthsData.formatter : treatedYearsData.formatter}
-                position={isMonth ? treatedMonthsData.position : treatedYearsData.position}
-            />
+
+            {treatedMonthsData ? (
+                <BarChart
+                    series={isMonth ? treatedMonthsData.series : treatedYearsData.series}
+                    colors={isMonth ? treatedMonthsData.colors : treatedYearsData.colors}
+                    categories={isMonth ? treatedMonthsData.categories : treatedYearsData.categories}
+                    formatter={isMonth ? treatedMonthsData.formatter : treatedYearsData.formatter}
+                    position={isMonth ? treatedMonthsData.position : treatedYearsData.position}
+                />
+            ) : (
+                <div className="animate-pulse px-6">
+                    <div className="w-full h-40 flex justify-between items-end">
+                        <div className="w-10 bg-gray-200 rounded h-3/4"></div>
+                        <div className="w-10 bg-gray-200 rounded h-2/3"></div>
+                        <div className="w-10 bg-gray-200 rounded h-5/6"></div>
+                        <div className="w-10 bg-gray-200 rounded h-1/2"></div>
+                    </div>
+                    <div className="flex justify-between mt-3">
+                        <div className="w-10 h-4 bg-gray-200 rounded-md"></div>
+                        <div className="w-10 h-4 bg-gray-200 rounded-md"></div>
+                        <div className="w-10 h-4 bg-gray-200 rounded-md"></div>
+                        <div className="w-10 h-4 bg-gray-200 rounded-md"></div>
+                    </div>
+                </div>
+            )}
             
         </Card>
     )
