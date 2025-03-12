@@ -9,12 +9,12 @@ import {
   PopoverPanel,
 } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import AddTransactions from './pages/AddTransactions'
-import RequestAnswer from './components/RequestAnswer'
-import { RequisitionsManagerContext } from './contexts/RequisitionsManager'
+
+
 import { useContext } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { AuthContext } from './contexts/Auth'
+import { Toaster } from 'sonner'
 
 const user = {
   name: 'Tom Cook',
@@ -26,7 +26,6 @@ const user = {
 
 export default function LayoutContainer() {
   
-  const { respData } = useContext(RequisitionsManagerContext)
   const { signOut } = useContext(AuthContext)
   
   const navigation = [
@@ -249,7 +248,7 @@ export default function LayoutContainer() {
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             
             <Outlet/>
-            {respData && <RequestAnswer respData={respData}/>}
+            <Toaster position="top-right" duration={3000} />
 
           </div>
         </main>
