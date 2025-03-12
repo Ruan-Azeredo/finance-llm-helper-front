@@ -1,21 +1,21 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import FileUpload from "../FileUpload"
 import { StyledButton } from "../micro/StyledButton"
 import { Transaction } from "../../schemas/Transaction"
 import TransactionForm from "../form/TransactionForm"
+import { TransactionsTemplateContext } from "../../contexts/TransactionsTemplate"
 
 
 interface AddTransactionSectionProps {
-    transactions: Transaction[]
     setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>
     setAnalyzeReqSended: (data: boolean) => void
 }
 
-export default function AddTransactionSection({ transactions, setTransactions, setAnalyzeReqSended }: AddTransactionSectionProps) {
+export default function AddTransactionSection({ setTransactions, setAnalyzeReqSended }: AddTransactionSectionProps) {
+
+    const { add_transaction, update_transaction } = useContext(TransactionsTemplateContext)
 
     const [showTransactionForm, setShowTransactionForm] = useState(false)
-
-    
 
     return (
         <div className="p-6">
@@ -35,7 +35,7 @@ export default function AddTransactionSection({ transactions, setTransactions, s
                 </div>
                 
                 <div className={showTransactionForm ? 'mt-6' : 'hidden'} >
-                    <TransactionForm transactions={transactions} setTransactions={setTransactions}/>
+                    <TransactionForm actions={{ add_transaction, update_transaction }}/>
                 </div>
             </div>
         </div>
