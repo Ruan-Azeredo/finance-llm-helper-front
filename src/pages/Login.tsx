@@ -1,105 +1,122 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/Auth";
+import Alert from "../components/Alert";
 
 export default function Login() {
 
-    const { signIn } = useContext(AuthContext)
+    const { signIn, loginError } = useContext(AuthContext)
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     return (
-      <>
-        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <img
-              alt="Your Company"
-              src="src/assets/spendlyzer-logo.png"
-              className="mx-auto h-12 w-auto"
-            />
-            <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your account
-            </h2>
-          </div>
-  
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <div className="space-y-6">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Email address
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      autoComplete="email"
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-  
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                    Password
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      autoComplete="current-password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-  
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                    <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-900">
-                      Remember me
+      <div className="h-screen">
+        <img
+          alt=""
+          src="src/assets/blue-background.jpg"
+          className="object-cover h-24 w-full rounded-b-md absolute -z-10 lg:hidden"
+        />
+        <div className="flex min-h-full flex-1 flex-row-reverse">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full max-w-sm lg:w-96">
+            <div>
+              <img
+                alt="Your Company"
+                src="src/assets/spendlyzer-full-logo.png"
+                className="h-10 w-auto lg:hidden"
+              />
+              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Entre na sua conta
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-500">
+                Ainda não possui uma conta?{' '}
+                <a href="/register" className="font-semibold text-blue-600 hover:text-blue-500">
+                  Me registrar
+                </a>
+              </p>
+            </div>
+
+            <div className="mt-10">
+              <div>
+                <div className="space-y-6">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                      Endereço de Email
                     </label>
+                    <div className="mt-2">
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        autoComplete="email"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
                   </div>
-  
-                  <div className="text-sm leading-6">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
+
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                      Senha
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        autoComplete="current-password"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
                   </div>
-                </div>
-  
-                <div>
-                  <button
-                    type="submit"
+
+                  {/* <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                      />
+                      <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-700">
+                        Lembre de mim
+                      </label>
+                    </div>
+
+                    <div className="text-sm leading-6">
+                      <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">
+                        Esqueceu a senha?
+                      </a>
+                    </div>
+                  </div> */}
+
+                  {loginError && <Alert type="error" message={loginError}/>}
+
+                  <div>
+                    <button
                     onClick={() => signIn(email, password)}
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Sign in
-                  </button>
+                      type="submit"
+                      className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                      Entrar
+                    </button>
+                  </div>
                 </div>
               </div>
-  
-              <div>
-                <div className="relative mt-10">
+
+              <div className="mt-10">
+                <div className="relative">
                   <div aria-hidden="true" className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-200" />
                   </div>
                   <div className="relative flex justify-center text-sm font-medium leading-6">
-                    <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                    <span className="bg-white px-6 text-gray-900">Ou entre com</span>
                   </div>
                 </div>
-  
+
                 <div className="mt-6 grid grid-cols-2 gap-4">
                   <a
                     href="#"
@@ -125,7 +142,7 @@ export default function Login() {
                     </svg>
                     <span className="text-sm font-semibold leading-6">Google</span>
                   </a>
-  
+
                   <a
                     href="#"
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -142,16 +159,36 @@ export default function Login() {
                 </div>
               </div>
             </div>
-  
-            <p className="mt-10 text-center text-sm text-gray-500">
-              Not a member?{' '}
-              <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
-            </p>
           </div>
         </div>
-      </>
+        <div className="relative hidden w-0 flex-1 lg:block align-middle">
+          <div className="w-full h-full flex justify-end">
+            <img src="src/assets/spendlyzer-logo-white.png" alt="" 
+              className="absolute left-0 m-4 h-10"
+            />
+            <div className="absolute text-gray-300 font-bold text-3xl justify-center flex flex-col align-middle h-full xl:mx-[20%] mx-10">
+              <img src="src/assets/spendlyzer-full-white-logo.png" alt=""
+                className="h-12 mb-3 w-fit"
+              />
+              <div className="relative">
+                <div aria-hidden="true" className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+              </div>
+              <p className="mt-2">Sua Organização Financeira</p>
+              <p className="ml-auto text-4xl mt-2 font-extrabold text-gray-100">É Simples.</p>
+            </div>
+            <div className="h-full w-full p-2">
+              <img
+                alt=""
+                src="src/assets/blue-background.jpg"
+                className="object-cover h-full w-full rounded-md"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     )
   }
   
